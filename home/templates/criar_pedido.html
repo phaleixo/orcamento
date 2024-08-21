@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="en">
+<html lang="pt-BR">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,11 +9,12 @@
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <!-- Navbar -->
+        <nav class="navbar navbar-light bg-light">
             <div class="logo">
                 <img src="{% static 'image/logo_abaco.png' %}" />
                 
-            </div/>
+            </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -22,7 +23,7 @@
                     
 
                     <li class="nav-item active">
-                     <a class="nav-link" href="#">Bem Vindo, {{ user.get_username }} <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="#">Bem Vindo, {{ user.get_username }} <span class="sr-only">(current)</span></a>
                     </li>
 
                     <li class="nav-item">
@@ -35,7 +36,6 @@
                 </ul>
             </div>
         </nav>
-
         <div class="container mt-4">
             <div class="row">
                 <div class="col-md-12">
@@ -106,14 +106,14 @@
 
                         <!-- Botões Salvar e Voltar -->
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary" >Salvar Pedido</button>
+                            <button type="submit" class="btn btn btn-success" >Salvar</button>
                             <a href="{% url 'all' %}" class="btn btn-secondary" >Voltar</a>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-        <!-- Importar Bootstrap JavaScript (opcional) -->
+        <!-- Importar Bootstrap JavaScript -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="{% static 'scripts/criar_pedido.js' %}"></script>

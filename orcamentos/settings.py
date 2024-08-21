@@ -1,6 +1,7 @@
 
 from pathlib import Path
 import os
+from django.contrib.messages import constants as messages
 
 
 
@@ -18,6 +19,9 @@ SECRET_KEY = 'django-insecure-71*hg=_$&8%7ur61m^x*fub^tquvsgrh_zd7&3ep=w%y8(q652
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+
+# superuser = gestor
+# senha = abaco
 
 
 # Application definition
@@ -123,3 +127,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_URL = '/home/login'
 LOGOUT_REDIRECT_URL = '/home/login'
+
+MESSAGE_TAGS={
+    messages.ERROR:'danger',
+    messages.SUCCESS:'success',
+}

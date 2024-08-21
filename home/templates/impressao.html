@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="pt-br">
+<html lang="pt-BR">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Pedido {{ pedido.id }}</title>
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">   
     </head>
@@ -16,7 +15,7 @@
             <p class="col py-2 px-md-0" id="dataAtual"></p>
         </header>
         <div>
-            <h5 class="text-center col py-2 px-md-5">ORCAMENTO N°:{{ data_atual }}-{{ pedido.id }}</h5> 
+            <h5 class="text-center col py-2 px-md-5">ORCAMENTO N°:{{ pedido.data|date:"Ydm" }}-{{ pedido.id }}</h5> 
             <h5 class="text-center col py-3 px-md-0">Dados do Cliente:</h5>
         </div>  
         <p>
@@ -62,9 +61,9 @@
             </tfoot>
         </table>
         <div class="float-right d-print-none">
-                <button type="button" class="btn btn-primary btn-imprimir" onclick="window.print()">Imprimir / Salvar PDF</button>
+                <button type="button" class="btn btn btn-success btn-imprimir" onclick="window.print()">Imprimir / Salvar PDF</button>
         </div>
-         <!-- Importar Bootstrap JavaScript (opcional) -->
+         <!-- Importar Bootstrap JavaScript -->
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="{% static 'scripts/impressao.js' %}"></script>

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,  user_passes_test
 from django.contrib.auth import logout
 from django.views.decorators.http import require_POST
 from .models import Pedido
@@ -9,6 +9,11 @@ from .forms import PedidoForm
 from datetime import date
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
+from .forms import CadastrarProdutoForm
+from .forms import CriarClienteForm
+from .forms import CadastroEmpresaForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 
 
 
@@ -40,8 +45,11 @@ def custom_logout(request):
     return render ('login.html')  # Redireciona para a página de login (login.html)
     
 @login_required
-def base(request):
-    return render(request, 'base.html')
+def gerenciamento(request):
+    if not request.user.is_superuser:
+        messages.error(request, "Você não tem permissão para acessar a página de gerenciamento.")
+        return redirect('all')  # Redireciona de volta para all.html
+    return render(request, 'gerenciamento.html')
 
 
 def login(request):
@@ -119,28 +127,90 @@ def parse_decimal_br(value):
 def excluir_pedido(request, pedido_id):
     # Obter o pedido pelo ID
     pedido = get_object_or_404(Pedido, pk=pedido_id)
-    if request.method == 'POST':
-        # Verificar se o formulário foi submetido via POST
-        # Processar a exclusão do pedido
-        pedido.delete()
-        # Redirecionar para uma página de sucesso ou outra view após a exclusão
-        return redirect('all')
-
-    # Se não for um POST, renderizar um template de confirmação de exclusão
-    return render(request, 'confirmar_exclusao.html', {'pedido': pedido})
+    if request.method == 'POST':# Verificar se o formulário foi submetido via POST
+        pedido.delete() # Processar a exclusão do pedido
+        return redirect('all')# Redirecionar para a página de inicio
+    
+    return render(request, 'confirmar_exclusao.html', {'pedido': pedido})# Se não for um POST, renderizar um template de confirmação de exclusão
 
 @login_required
 def imprimir_pedido(request, pedido_id):
     pedido = Pedido.objects.get(pk=pedido_id)
-    now = datetime.now()
-    ano = str(now.year).zfill(4) 
-    mes = str(now.month).zfill(2) 
-    dia = str(now.day).zfill(2)
-    data_atual = ano + mes + dia
     context = {
-        'data_atual': data_atual,
         'pedido': pedido
     }
-    return render(request, 'impressao.html', context)
-    # Exemplo simples: retornar uma mensagem de sucesso
-    #return HttpResponse(f'O pedido {pedido_id} foi enviado para impressão com sucesso!')
+    return render(request, 'impressao.html', context)# Redirecionar para a página de impressão
+   
+    
+
+@login_required
+def cadastrar_produtos(request):
+    if request.method == 'POST':
+        form = CadastrarProdutoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Produto cadastrado com sucesso!')
+            
+        else:
+            messages.error(request, 'Erro ao cadastrar produto. Verifique os dados e tente novamente.')
+            print(form.errors)    
+    else:
+        form = CadastrarProdutoForm()
+    
+    return render(request, 'cadastrar_produtos.html', {'form': form})
+
+@login_required
+def cadastrar_clientes(request):
+    if request.method == 'POST':
+        form = CriarClienteForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Cliente cadastrado com sucesso!')
+            
+        else:
+            print(form.errors)
+            messages.error(request, 'Erro ao cadastrar cliente. Verifique os dados e tente novamente.')    
+    else:
+        form = CriarClienteForm()
+    
+    return render(request, 'cadastrar_clientes.html', {'form': form})
+
+@login_required
+def cadastrar_empresa(request):
+    if request.method == 'POST':
+        form = CadastroEmpresaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Empresa cadastrada com sucesso!')
+            
+        else:
+            print(form.errors)
+            messages.error(request, 'Erro ao cadastrar Empresa. Verifique os dados e tente novamente.')    
+    else:
+        form = CadastroEmpresaForm()
+    
+    return render(request, 'cadastrar_empresa.html', {'form': form})
+    
+@login_required
+def cadastrar_vendedores(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        nome_completo = request.POST.get('nome_completo')
+        cod_vendedor = request.POST.get('cod_vendedor')
+        
+        if form.is_valid():
+            user = form.save()
+            user.first_name = nome_completo
+            user.last_name = cod_vendedor
+            user.save()
+
+            messages.success(request, 'Vendedor cadastrado com sucesso!')
+            
+        else:
+            print(form.errors)
+            messages.error(request, 'Erro ao cadastrar vendedor. Verifique os dados.')
+    else:
+        form = UserCreationForm()
+    
+    return render(request, 'cadastrar_vendedores.html', {'form': form})
+

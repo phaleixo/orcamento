@@ -5,16 +5,17 @@
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Orcamento</title>
-            <!-- Adicionando Bootstrap CSS -->
+            <!-- Bootstrap CSS -->
             <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-            <!-- Adicionando FontAwesome para ícones -->
+            <!-- FontAwesome -->
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
             
         </head>
 
         <body>
-            <!-- Barra Superior -->
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <!-- Navbar -->
+            
+            <nav class="navbar navbar-light bg-light">
                 <div class="logo">
                     <img src="{% static 'image/logo_abaco.png' %}" />
                 </div>
@@ -28,7 +29,8 @@
                             <a class="nav-link" href="#">Bem Vindo, {{ user.get_username }} <span class="sr-only">(current)</span></a>
                         </li>
 
-                        <li class="nav-item">
+                        <li class="nav-item ">
+                            <a href="{% url 'gerenciamento' %}" class="nav-link" role="button">Gerenciamento</a>
                             <a href="{% url 'logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link" role="button">Deslogar</a>
                             <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
                                 {% csrf_token %}
@@ -39,16 +41,26 @@
                 </div>
             </nav>
             
-
-            <!-- Corpo da Página -->
-            
-            
             <div class="container mt-4">
-                <h2 class="mb-4">Meus Orçamentos</h2>
-                <div class="d-flex justify-content-end mb-3">
-                    <a href="{% url 'criar_pedido' %}" class="btn btn-primary new-orcamento-btn" role="button">Novo Orçamento</a>
+                <!-- Exibição de mensagens de erro -->
+                {% if messages %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <h2 class="mb-4">MEUS ORÇAMENTOS</h2>
+                <div class="d-flex justify-content-center p-2">
+                    <a href="{% url 'criar_pedido' %}" class="btn btn-primary mx-2" role="button">Novo Orçamento</a>
+                    <a href="{% url 'cadastrar_produtos' %}" class="btn btn-secondary mx-2" role="button">Cadastrar Produtos</a>
+                    <a href="{% url 'cadastrar_clientes' %}" class="btn btn-secondary mx-2" role="button">Cadastrar Clientes</a>
+                    <a href="{% url 'cadastrar_empresa' %}" class="btn btn-secondary mx-2" role="button">Cadastrar Empresa</a>
+                    <a href="{% url 'cadastrar_vendedores' %}" class="btn btn-secondary mx-2" role="button">Cadastrar Vendedores</a>
                 </div>
-                <div class="table-responsive">
+                
+                
+                <div class="table-responsive p-2">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -68,7 +80,7 @@
                                 <td>R$ {{ pedido.valor_total }}</td>
                                 <td>
                                     <a href="{% url 'excluir_pedido' pedido.id %}" class="btn btn-danger btn-sm" style="width: 60px; margin-bottom: 5px;">Excluir</a>
-                                    <a href="{% url 'imprimir_pedido' pedido.id %}" target="_blank" class="btn btn-primary btn-sm" style="width: 60px; margin-bottom: 5px;">Detalhe</a>
+                                    <a href="{% url 'imprimir_pedido' pedido.id %}" target="_blank" class="btn btn-secondary btn-sm" style="width: 60px; margin-bottom: 5px;">Info</a>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -81,11 +93,10 @@
             <footer class="footer fixed-bottom">
                 <!-- Copyright -->
                 <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
-                    <a class="text-body" target=blank href="https://github.com/phaleixo/orcamento">DRP10-PJI110-A2024S1-T002 (Projeto PI-1 Univesp 2024)</a>
+                    <a class="text-body" target=blank href="https://github.com/phaleixo/orcamento">PROJETO PI II - UNIVESP - 2024</a>
                 </div>
-                <!-- Copyright -->
             </footer>
-            <!-- Adicionando Bootstrap JS (opcional) -->
+            <!-- Adicionando Bootstrap JS  -->
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

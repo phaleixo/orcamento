@@ -4,13 +4,14 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Confirmação de Exclusão</title>
-        <!-- Integrando Bootstrap via CDN -->
+        <!-- Importar Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     </head>
-    <body class="d-flex justify-content-center align-items-center">
+    <body class="d-flex justify-content-center align-items-center" style="height: 100vh;">
         <div class="container text-center">
             <h2>Confirmação de Exclusão</h2>
-            <p>Você tem certeza que deseja excluir o pedido?</p>
+            <p style="padding-bottom: 15px;">Você tem certeza que deseja excluir o Orcamento?</p>
+            <p><strong>ESTA OPERAÇÃO NÃO PODERÁ SER DESFEITA!</strong></p>
 
             <form method="post">
                 {% csrf_token %}
@@ -19,7 +20,7 @@
             </form>
         </div>
 
-        <!-- Integrando Bootstrap JavaScript (opcional, apenas se necessário para funcionalidades específicas) -->
+        <!-- Importar Bootstrap JavaScript -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </body>

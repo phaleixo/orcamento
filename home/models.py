@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinLengthValidator
 
 
 class Pedido(models.Model):
@@ -18,6 +19,50 @@ class Pedido(models.Model):
 
     class Meta:
         ordering = ['-id']  # Ordenar por data_pedido em ordem decrescente    
-        
 
-    
+class CadastrarProduto(models.Model):
+    cod_produto = models.CharField(max_length=100)
+    produto = models.CharField(max_length=100)  
+    descricao_produto = models.TextField(max_length=100)  
+
+class CriarCliente(models.Model):
+    nome_cliente = models.CharField(
+    max_length=100, 
+    validators=[MinLengthValidator(2)]  # Mínimo de 2 caracteres
+    )
+    cpf_cnpj = models.CharField(
+    max_length=14,
+    validators=[MinLengthValidator(11)]  # Mínimo de 11 caracteres (para CPF)
+    )
+    contato = models.CharField(
+    max_length=11,
+    validators=[MinLengthValidator(10)]  # Mínimo de 10 caracteres (para número de telefone)
+    )
+    detal_cliente = models.TextField(
+    max_length=100,
+    blank=True,         # Campo pode ser deixado em branco no formulário
+    null=True,          # Campo pode armazenar valor NULL no banco de dados
+    validators=[MinLengthValidator(0)]  # Mínimo de 0 caracteres, o que significa opcional
+    )
+
+class CadastroEmpresa(models.Model):
+    nome_empresa = models.CharField(
+    max_length=100, 
+    validators=[MinLengthValidator(2)]  # Mínimo de 2 caracteres
+    )
+    cpf_cnpj = models.CharField(
+    max_length=14,
+    validators=[MinLengthValidator(11)]  # Mínimo de 11 caracteres (para CPF)
+    )
+    contato = models.CharField(
+    max_length=11,
+    validators=[MinLengthValidator(10)]  # Mínimo de 10 caracteres (para número de telefone)
+    )
+    end_empresa = models.TextField(
+    max_length=100,
+    blank=True,         # Campo pode ser deixado em branco no formulário
+    null=True,          # Campo pode armazenar valor NULL no banco de dados
+    validators=[MinLengthValidator(0)]  # Mínimo de 0 caracteres, o que significa opcional
+    )
+
+

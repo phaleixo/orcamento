@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cadastro de Vendedores</title>
+        <!-- Importar Bootstrap CSS -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <!-- Navbar -->
+        <nav class="navbar navbar-light bg-light">
+            <div class="logo">
+                <img src="{% static 'image/logo_abaco.png' %}" />
+                
+            </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    
+
+                    <li class="nav-item active">
+                    <a class="nav-link" href="#">Bem Vindo, {{ user.get_username }} <span class="sr-only">(current)</span></a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{% url 'logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link" role="button">Deslogar</a>
+                        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                            {% csrf_token %}
+                        </form>
+                    </li>
+                
+                </ul>
+            </div>
+        </nav>
+        
+        <!-- Mensagem de Alerta -->
+        {% if messages %}
+            <div class="row">
+                <div class="col-md-12">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+            
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="mb-4">CADASTRO DE VENDEDORES</h3>
+                    
+                    <!-- Formulário de Criação de Cliente -->
+                    <form id="UserCreationForm" method="post">
+                        {% csrf_token %}
+                    
+                        <div class="form-row mb-3">
+                            <div class="col-12">
+                                <label for="id_nome_completo">Nome Completo:</label>
+                                <input type="text" class="form-control" id="id_nome_completo" name="nome_completo" required>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label for="id_cod_vendedor">Código do Vendedor:</label>
+                                <input type="text" class="form-control" id="id_cod_vendedor" name="cod_vendedor" required>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label for="id_username">Nome de Usuário:</label>
+                                <input type="text" class="form-control" id="id_username" name="username" required>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label for="id_password1">Senha:</label>
+                                <input type="password" class="form-control" id="id_password1" name="password1" required>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label for="id_password2">Confirme a Senha:</label>
+                                <input type="password" class="form-control" id="id_password2" name="password2" required>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success">Salvar</button>
+                            <a href="{% url 'all' %}" class="btn btn-secondary">Voltar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Importar Bootstrap JavaScript -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        
+
+
+
+    </body>
+</html>
