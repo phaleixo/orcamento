@@ -2,7 +2,15 @@ Projeto PI 1 da turma 002 Cravinhos 2024
 
 Aplicativo simples para Orçamento feito com Python 3.10.14
 
-Requerimentos:
+**Necessário ter o Python:
+https://www.python.org/downloads/
+E o Git instalados:
+https://git-scm.com/downloads**
+
+Opcionalmente para editar o codigo vc pode utilizar o Vscode:
+https://code.visualstudio.com/
+
+Requerimentos que serão instalados pelo requeriments.txt:
 ``asgiref==3.8.1``
 ``crispy-bootstrap4==2024.1``
 ``Django==4.2.4``
@@ -52,7 +60,14 @@ Windows:
 ```
 pip install -r requirements.txt
 ```
-7 - Inicie o servidor
+
+7 - Crie um Superuser (necessario para acesso ao painel administrativo)
+
+```
+python manage.py createsuperuser
+```
+
+8 - Inicie o servidor
 ```
 python manage.py runserver
 ```
@@ -60,7 +75,7 @@ python manage.py runserver
 ```
 http://127.0.0.1:8000/
 ```
-9 - Se quiser adaptar ou melhor o aplicativo, abra o vscode na pasta:
+9 - Para adaptar ou melhorar o aplicativo, abra o vscode na pasta:
 ```
 code .
 ```
