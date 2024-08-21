@@ -7,7 +7,7 @@ https://www.python.org/downloads/
 E o Git instalados:
 https://git-scm.com/downloads**
 
-Opcionalmente para editar o codigo vc pode utilizar o Vscode:
+Opcionalmente para editar o codigo pode-se utilizar o Vscode:
 https://code.visualstudio.com/
 
 Requerimentos que serão instalados pelo requeriments.txt:
