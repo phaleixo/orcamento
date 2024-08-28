@@ -10,12 +10,14 @@
     </head>
     <body>
         <!-- Navbar -->
-        <nav class="navbar navbar-light bg-light">
+        <nav class="navbar" style="background-color: #5c388f;">
             <div class="logo">
-                <img src="{% static 'image/logo_abaco.png' %}" />
-                
+                <img src="{% static 'image/logo_192.png' %}" style="width: 60px;" />
             </div>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <div style="position: relative;">
+                <h1 class="text-white">Orça Facil</h1>
+            </div>
+            <button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
@@ -72,6 +74,11 @@
                 </div>
             </div>
         </div>
+        <footer class="footer fixed-bottom">
+            <div class="text-center p-3" style="background-color: #5c388f;">
+                <a class="text-white" target=blank href="https://github.com/phaleixo/orcamento">PROJETO PI II - UNIVESP - 2024</a>
+            </div>
+        </footer>
         <!-- Importar Bootstrap JavaScript -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
