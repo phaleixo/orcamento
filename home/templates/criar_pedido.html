@@ -11,11 +11,11 @@
     <body>
         <!-- Navbar -->
         <nav class="navbar" style="background-color: #5c388f;">
-            <div class="logo">
-                <img src="{% static 'image/logo_192.png' %}" style="width: 60px;" />
-            </div>
-            <div style="position: relative;">
-                <h1 class="text-white">Orça Facil</h1>
+            <div class="d-flex align-items-center">
+                <div class="logo mr-2">
+                    <img src="{% static 'image/logo_192.png' %}" style="width: 60px;" />
+                </div>
+                <h1 class="text-white mb-0">Orça Facil</h1>
             </div>
             <button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -109,13 +109,13 @@
                         <!-- Botões Salvar e Voltar -->
                         <div class="form-group">
                             <button type="submit" class="btn btn btn-success" >Salvar</button>
-                            <a href="{% url 'all' %}" class="btn btn-secondary" >Voltar</a>
+                            <a href="javascript:window.history.back();" class="btn btn-secondary">Voltar</a>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-        <footer class="footer fixed-bottom">
+        <footer>
             <div class="text-center p-3" style="background-color: #5c388f;">
                 <a class="text-white" target=blank href="https://github.com/phaleixo/orcamento">PROJETO PI II - UNIVESP - 2024</a>
             </div>
