@@ -1,8 +1,10 @@
 from django.db import models
 from django.core.validators import MinLengthValidator
+from django.contrib.auth.models import User
 
 
 class Pedido(models.Model):
+    vendedor = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     data = models.DateField()
     nome_cliente = models.CharField(max_length=100)
     contato = models.CharField(max_length=11)
@@ -19,6 +21,7 @@ class Pedido(models.Model):
 
     class Meta:
         ordering = ['-id']  # Ordenar por data_pedido em ordem decrescente    
+
 
 class CadastrarProduto(models.Model):
     cod_produto = models.CharField(max_length=100)

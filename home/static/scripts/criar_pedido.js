@@ -181,3 +181,38 @@ document.getElementById('id_cpf_cnpj').addEventListener('input', function() {
         erro_contato.style.display = 'none';
     }
 });
+
+document.getElementById('addProdutoBtn').addEventListener('click', function() {
+    var produtosDiv = document.getElementById('produtos');
+    var novoProduto = produtosDiv.cloneNode(true); // Clona o bloco de produto
+    novoProduto.querySelectorAll('input').forEach(function(input) {
+        input.value = ''; // Limpa os valores dos inputs
+    });
+    produtosDiv.parentNode.insertBefore(novoProduto, this); // Insere antes do botão
+});
+
+// Função para calcular o valor total
+function calcularValorTotal() {
+    let total = 0;
+    
+    // Itera sobre todos os produtos
+    document.querySelectorAll('#produtos').forEach(function(produtoDiv) {
+        let quantidade = produtoDiv.querySelector('input[name="quantidade[]"]').value;
+        let valorUnitario = produtoDiv.querySelector('input[name="valor_unitario[]"]').value;
+        
+        // Calcula o total de cada produto e adiciona ao valor total
+        if (quantidade && valorUnitario) {
+            total += parseFloat(quantidade) * parseFloat(valorUnitario);
+        }
+    });
+
+    // Atualiza o campo de valor total
+    document.getElementById('valor_total').value = total.toFixed(2);
+}
+
+// Adiciona o evento de cálculo ao mudar quantidade ou valor unitário
+document.addEventListener('input', function(event) {
+    if (event.target.name === 'quantidade[]' || event.target.name === 'valor_unitario[]') {
+        calcularValorTotal();
+    }
+});

@@ -60,19 +60,19 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>Cod. do Vendedor</th>
+                            <th>Data Orçamento</th>
                             <th>Nome do vendedor</th>
-                            <th>Quant. de Orçamentos</th>
-                            <th>Total Orçamentos</th>
-                            <th>Total de Vendas</th>
+                            <th>Cliente</th>
+                            <th>Total Orçamento</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for pedido in pedidos %}
                         <tr>
                             <td>{{ pedido.data|date:"d/m/Y" }}</td>
+                            <td>{{ pedido.vendedor }}</td>
                             <td>{{ pedido.nome_cliente }}</td>
-                            <td>{{ pedido.cpf_cnpj }}</td>
                             <td>R$ {{ pedido.valor_total }}</td>
                             <td>
                                 <a href="{% url 'excluir_pedido' pedido.id %}" class="btn btn-danger btn-sm" style="width: 60px; margin-bottom: 5px;">Excluir</a>

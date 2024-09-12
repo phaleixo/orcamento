@@ -13,17 +13,17 @@
     
     
       <!-- logo -->
-      <div class="d-flex justify-content-center align-items-center mt-5">
+      <div class="d-flex justify-content-center align-items-center mt-4">
         <img src="{% static 'image/logo_192.png' %}" alt="Logo" style="width: 60px; height: 60px;" />
         <h1 class="ml-3" style="color: white;">Orça Facil</h1>
       </div>
       
       <!-- login -->
-      <div class="container">
+      <div class="container mt-4">
         <div class="row justify-content-center">
           <div class="col-md-4">
             <div class="card">
-              <div class="card-header text-center"><strong>Acessar</strong></div>
+              <div class="card-header text-center"><strong>Login</strong></div>
               <div class="card-body">
                 <form method="post">
                   {% csrf_token %}
@@ -37,7 +37,7 @@
       </div>
     <!-- Footer -->
     <footer class="footer fixed-bottom">
-      <div class="text-center p-3" style="background-color: rgba(5, 5, 5, 0.096);">
+      <div class="text-center p-3" style="background-color: #5c388f;">
           <a class="text-white" target=blank href="https://github.com/phaleixo/orcamento">PROJETO PI II - UNIVESP - 2024</a>
       </div>
     </footer>

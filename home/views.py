@@ -14,11 +14,50 @@ from .forms import CriarClienteForm
 from .forms import CadastroEmpresaForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
+from django.utils import timezone
 
 
+# Função para verificar se o usuário pertence ao grupo 'gestores'
+def is_in_group_gestores(user):
+    return user.groups.filter(name='gestores').exists()
 
 @login_required
 def all(request):
+    # Se o usuário for do grupo 'gestores', redirecionar para a página de gerenciamento
+    if is_in_group_gestores(request.user):
+        return redirect('gerenciamento')
+
+    # Caso não seja do grupo 'gestores', exibir pedidos apenas do usuário logado
+    pedidos = Pedido.objects.filter(vendedor=request.user)
+    now = timezone.now()
+    ano = str(now.year).zfill(4)
+    mes = str(now.month).zfill(2)
+    dia = str(now.day).zfill(2)
+    data_atual = ano + mes + dia
+
+    for pedido in pedidos:
+        pedido.nome_cliente = pedido.nome_cliente.upper() if pedido.nome_cliente else ''
+        pedido.cpf_cnpj = pedido.cpf_cnpj.upper() if pedido.cpf_cnpj else ''
+
+    context = {
+        'data_atual': data_atual,
+        'pedidos': pedidos
+    }
+
+    return render(request, 'all.html', context)
+
+@require_POST
+def custom_logout(request):
+    logout(request)
+    return render ('login.html')  # Redireciona para a página de login (login.html)
+
+# Função para verificar se o usuário pertence ao grupo 'gestores'      
+def is_in_group_gestores(user):
+    return user.groups.filter(name='gestores').exists()
+
+@login_required
+@user_passes_test(is_in_group_gestores)
+def gerenciamento(request):
     pedidos = Pedido.objects.all()
     now = datetime.now()
     ano = str(now.year).zfill(4) 
@@ -28,29 +67,12 @@ def all(request):
     for pedido in pedidos:
         pedido.nome_cliente = pedido.nome_cliente.upper() if pedido.nome_cliente else ''
         pedido.cpf_cnpj = pedido.cpf_cnpj.upper() if pedido.cpf_cnpj else ''
-        
-   
+    
     context = {
         'data_atual': data_atual,
         'pedidos': pedidos
     }
-        
-    return render(request, 'all.html', context )
-
-
-
-@require_POST
-def custom_logout(request):
-    logout(request)
-    return render ('login.html')  # Redireciona para a página de login (login.html)
-    
-@login_required
-def gerenciamento(request):
-    if not request.user.is_superuser:
-        messages.error(request, "Você não tem permissão para acessar a página de gerenciamento.")
-        return redirect('all')  # Redireciona de volta para all.html
-    return render(request, 'gerenciamento.html')
-
+    return render(request, 'gerenciamento.html', context)
 
 def login(request):
     if request.method == 'POST':
@@ -67,6 +89,9 @@ def login(request):
     return render(request, 'login.html', {'form': form})
 
 
+# Função para converter valor monetário brasileiro em Decimal
+def parse_decimal_br(value):
+    return Decimal(value.replace('.', '').replace(',', '.'))
 
 @login_required
 def criar_pedido(request):
@@ -94,6 +119,8 @@ def criar_pedido(request):
                 except ValueError:
                     # Lidar com erro de conversão de valor
                     pass
+            # Atribuir o usuário logado ao pedido
+            form.instance.vendedor = request.user  
             form.save()
             return redirect('all')  # Redirecionar para página de sucesso após salvar
         
@@ -107,6 +134,7 @@ def criar_pedido(request):
     }
 
     return render(request, 'criar_pedido.html', context)
+
 
 def parse_decimal_br(value):
     """Função para converter valor monetário brasileiro em Decimal."""
@@ -141,8 +169,6 @@ def imprimir_pedido(request, pedido_id):
     }
     return render(request, 'impressao.html', context)# Redirecionar para a página de impressão
    
-    
-
 @login_required
 def cadastrar_produtos(request):
     if request.method == 'POST':
