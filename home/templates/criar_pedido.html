@@ -7,6 +7,8 @@
         <title>NOVO ORÇAMENTO</title>
         <!-- Importar Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <!-- FontAwesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     </head>
     <body>
         <!-- Navbar -->
@@ -17,24 +19,20 @@
                 </div>
                 <h1 class="text-white mb-0">Orça Facil</h1>
             </div>
-            <button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa-solid fa-ellipsis-vertical fa-xl" style="color: #ffffff;"></i>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
-                    
-
                     <li class="nav-item active">
-                    <a class="nav-link" href="#">Bem Vindo, {{ user.get_username }} <span class="sr-only">(current)</span></a>
+                        <a class="nav-link text-white" href="#">Bem Vindo, {{ user.get_username }} <span class="sr-only">(current)</span></a>
                     </li>
-
                     <li class="nav-item">
-                        <a href="{% url 'logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link" role="button">Deslogar</a>
+                        <a href="{% url 'logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link text-white" role="button">Deslogar</a>
                         <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
                             {% csrf_token %}
                         </form>
                     </li>
-                
                 </ul>
             </div>
         </nav>
@@ -42,11 +40,9 @@
             <div class="row">
                 <div class="col-md-12">
                     <h3 class="mb-4">NOVO ORÇAMENTO</h3>
-                    
                     <!-- Formulário de Criação de Pedido -->
                     <form id="criarPedidoForm" method="post">
                         {% csrf_token %}
-
                         <!-- Nome do Cliente, Contato, CPF/CNPJ -->
                         <div class="form-row mb-3">
                             <div class="form-group">
@@ -72,7 +68,6 @@
                                 <input type="text" class="form-control" id="id_nome_cliente" name="nome_cliente" required>
                             </div>
                         </div>
-
                         <div class="form-row align-items-center">
                             <div class="col">
                                 <label for="produto">Produto:</label>
@@ -98,14 +93,11 @@
                             <label for="descricao_pedido">Descrição do Pedido:</label>
                             <textarea class="form-control" id="descricao_pedido" name="descricao_pedido" rows="3" required></textarea>
                         </div>
-                        
-                    
                         <!-- Valor Total -->
                         <div class="form-group">
                             <label for="valor_total">Valor Total R$:</label>
                             <input type="number" step="0.01" class="form-control" id="valor_total" name="valor_total" readonly required>
                         </div>
-
                         <!-- Botões Salvar e Voltar -->
                         <div class="form-group">
                             <button type="submit" class="btn btn btn-success" >Salvar</button>

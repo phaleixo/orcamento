@@ -21,10 +21,10 @@ class PedidoForm(forms.ModelForm):
         # Caso queira selecionar campos específicos:
         #fields = ['data', 'nome_cliente', 'contato', 'cpf_cnpj','descricao_pedido', 'descricao_impresso', 'valor_total']
         
-class CadastrarProdutoForm(forms.ModelForm):
+class CadastrarProdutoForm(forms.ModelForm):    
     class Meta:
         model = CadastrarProduto
-        fields = ['cod_produto', 'produto', 'descricao_produto']
+        fields = ['cod_produto', 'produto', 'descricao_produto','valorproduto']
 
 class CriarClienteForm(forms.ModelForm):
     class Meta:

@@ -12,14 +12,12 @@
             <h2>Confirmação de Exclusão</h2>
             <p style="padding-bottom: 15px;">Você tem certeza que deseja excluir o Orcamento?</p>
             <p><strong>ESTA OPERAÇÃO NÃO PODERÁ SER DESFEITA!</strong></p>
-
             <form method="post">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
                 <a href="javascript:window.history.back();" class="btn btn-secondary">Cancelar</a>
             </form>
         </div>
-
         <!-- Importar Bootstrap JavaScript -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

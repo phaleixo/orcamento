@@ -11,7 +11,7 @@ class Pedido(models.Model):
     cpf_cnpj = models.CharField(max_length=14)
     produto = models.CharField(max_length=100)
     quantidade = models.IntegerField()
-    valor_unitario = models.DecimalField(max_digits=10, decimal_places=2)
+    valor_unitario = models.DecimalField(max_digits=10, decimal_places=2)     
     descricao_pedido = models.TextField()
     descricao_impresso = models.TextField()
     valor_total = models.DecimalField(max_digits=10, decimal_places=2)
@@ -25,7 +25,8 @@ class Pedido(models.Model):
 
 class CadastrarProduto(models.Model):
     cod_produto = models.CharField(max_length=100)
-    produto = models.CharField(max_length=100)  
+    produto = models.CharField(max_length=100)
+    valorproduto = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)  
     descricao_produto = models.TextField(max_length=100)  
 
 class CriarCliente(models.Model):
