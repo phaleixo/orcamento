@@ -38,10 +38,11 @@ def all(request):
     for pedido in pedidos:
         pedido.nome_cliente = pedido.nome_cliente.upper() if pedido.nome_cliente else ''
         pedido.cpf_cnpj = pedido.cpf_cnpj.upper() if pedido.cpf_cnpj else ''
+        
 
     context = {
         'data_atual': data_atual,
-        'pedidos': pedidos
+        'pedidos': pedidos,
     }
 
     return render(request, 'all.html', context)

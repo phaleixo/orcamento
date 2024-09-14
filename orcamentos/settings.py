@@ -20,8 +20,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-# superuser = gestor
+# adm = administracao
 # senha = abaco
+
+# gestor = gestor1
+# senha = lu117296
+
+# vendedor = vendedor1
+# senha = lu117296
 
 
 # Application definition
