@@ -95,10 +95,7 @@ elementoDataAtual.textContent = "Data Atual: " + dataFormatada;
 // Chamar a função para exibir a data atual quando a página terminar de carregar
 window.onload = exibirDataAtual;
 
-document.addEventListener('DOMContentLoaded', function() {
-    var adicionarProdutoBtn = document.getElementById('adicionarProdutoBtn');
-    adicionarProdutoBtn.addEventListener('click', adicionarProduto);
-});
+
 
 // Função para validar o formulário antes de submeter
 $(document).ready(function () {
@@ -182,14 +179,7 @@ document.getElementById('id_cpf_cnpj').addEventListener('input', function() {
     }
 });
 
-document.getElementById('addProdutoBtn').addEventListener('click', function() {
-    var produtosDiv = document.getElementById('produtos');
-    var novoProduto = produtosDiv.cloneNode(true); // Clona o bloco de produto
-    novoProduto.querySelectorAll('input').forEach(function(input) {
-        input.value = ''; // Limpa os valores dos inputs
-    });
-    produtosDiv.parentNode.insertBefore(novoProduto, this); // Insere antes do botão
-});
+
 
 // Função para calcular o valor total
 function calcularValorTotal() {
@@ -226,4 +216,57 @@ document.addEventListener('DOMContentLoaded', function() {
         const valor = selectedOption.getAttribute('data-valor');
         valorUnitarioInput.value = valor || '';
     });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    var cpfCnpjInput = document.getElementById('id_cpf_cnpj');
+    var nomeClienteInput = document.getElementById('id_nome_cliente');
+    var contatoInput = document.getElementById('id_contato');
+    
+    if (cpfCnpjInput) {
+        var url = cpfCnpjInput.getAttribute('data-url');
+
+        cpfCnpjInput.addEventListener('change', function() {
+            var cpf_cnpj = this.value;
+            if (cpf_cnpj) {
+                fetch(url + '?cpf_cnpj=' + cpf_cnpj)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            alert('Cliente não encontrado!');
+                        } else {
+                            // Preencher os campos automaticamente
+                            nomeClienteInput.value = data.nome_cliente;
+                            contatoInput.value = data.contato;
+                        }
+                    })
+                    .catch(error => console.error('Erro:', error));
+            }
+        });
+    }
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    var produtoSelect = document.getElementById('id_produto');
+    var valorUnitarioInput = document.getElementById('valor_unitario');
+
+    if (produtoSelect && valorUnitarioInput) {
+        produtoSelect.addEventListener('change', function() {
+            var selectedOption = produtoSelect.options[produtoSelect.selectedIndex];
+            var valor = selectedOption.getAttribute('data-valor');
+
+            // Substitui a vírgula por ponto para garantir compatibilidade com todos os navegadores
+            valor = valor.replace(',', '.');
+
+            // Converte o valor para um número float
+            var valorFloat = parseFloat(valor);
+
+            if (!isNaN(valorFloat)) {
+                valorUnitarioInput.value = valorFloat.toFixed(2);  // Define o valor com 2 casas decimais
+            } else {
+                valorUnitarioInput.value = '';  // Limpa o campo se o valor não for um número válido
+            }
+        });
+    }
 });

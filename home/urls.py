@@ -17,6 +17,9 @@ urlpatterns = [
     path('cadastrar_clientes/', views.cadastrar_clientes, name="cadastrar_clientes"),
     path('cadastrar_empresa/', views.cadastrar_empresa, name="cadastrar_empresa"),
     path('cadastrar_vendedores/', views.cadastrar_vendedores, name="cadastrar_vendedores"),
+    path('all_produtos/', views.all_produtos, name="all_produtos"),
+    path('all_clientes/', views.all_clientes, name="all_clientes"),
     path('gerenciamento/', views.gerenciamento, name="gerenciamento"),
+    path('buscar_cliente/', views.buscar_cliente, name='buscar_cliente'),
     
 ]

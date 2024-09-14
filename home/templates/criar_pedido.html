@@ -51,10 +51,11 @@
                         </div>
                         <div class="col">
                             <label for="id_cpf_cnpj">CPF/CNPJ:</label>
-                            <input type="text" class="form-control" id="id_cpf_cnpj" name="cpf_cnpj" required>
+                            <input type="text" class="form-control" id="id_cpf_cnpj" name="cpf_cnpj" required data-url="{% url 'buscar_cliente' %}">
                             <div id="erro_cpf_cnpj" class="invalid-feedback" style="display: none;">
                                 Corrija o CPF ou CNPJ.
-                            </div>    
+                            </div>
+                            <ul id="cpf_cnpj_suggestions" style="display:none; list-style-type: none; padding: 0;"></ul>
                         </div>
                         <div class="col">
                             <label for="id_contato">Contato:</label>
@@ -112,7 +113,7 @@
             </div>
         </div>
     </div>
-    <footer>
+    <footer class="footer navbar-fixed-bottomm">
         <div class="text-center p-3" style="background-color: #5c388f;">
             <a class="text-white" target="_blank" href="https://github.com/phaleixo/orcamento">PROJETO PI II - UNIVESP - 2024</a>
         </div>
@@ -121,17 +122,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="{% static 'scripts/criar_pedido.js' %}"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const produtoSelect = document.querySelector('#id_produto');
-            const valorUnitarioInput = document.querySelector('#valor_unitario');
-            
-            produtoSelect.addEventListener('change', function() {
-                const selectedOption = produtoSelect.options[produtoSelect.selectedIndex];
-                const valor = selectedOption.getAttribute('data-valor');
-                valorUnitarioInput.value = valor || '';
-            });
-        });
-    </script>
+    
 </body>
 </html>

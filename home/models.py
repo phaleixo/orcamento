@@ -38,7 +38,7 @@ class CriarCliente(models.Model):
     validators=[MinLengthValidator(2)]  # Mínimo de 2 caracteres
     )
     cpf_cnpj = models.CharField(
-    max_length=14,
+    max_length=14, unique=True,
     validators=[MinLengthValidator(11)]  # Mínimo de 11 caracteres (para CPF)
     )
     contato = models.CharField(
@@ -51,6 +51,8 @@ class CriarCliente(models.Model):
     null=True,          # Campo pode armazenar valor NULL no banco de dados
     validators=[MinLengthValidator(0)]  # Mínimo de 0 caracteres, o que significa opcional
     )
+    def __str__(self):
+        return f'{self.nome_cliente} - {self.cpf_cnpj} - {self.contato} - {self.detal_cliente}' 
 
 class CadastroEmpresa(models.Model):
     nome_empresa = models.CharField(

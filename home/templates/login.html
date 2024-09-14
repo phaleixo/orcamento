@@ -2,49 +2,49 @@
 {% load crispy_forms_tags %}
 {% load static %}
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    
-  </head>
-  <body  style="background-color: #5c388f;">;">
-    
-    
-      <!-- logo -->
-      <div class="d-flex justify-content-center align-items-center mt-4">
-        <img src="{% static 'image/logo_192.png' %}" alt="Logo" style="width: 60px; height: 60px;" />
-        <h1 class="ml-3" style="color: white;">Orça Facil</h1>
-      </div>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>login</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
       
-      <!-- login -->
-      <div class="container mt-4">
-        <div class="row justify-content-center">
-          <div class="col-md-4">
-            <div class="card">
-              <div class="card-header text-center"><strong>Login</strong></div>
-              <div class="card-body">
-                <form method="post">
-                  {% csrf_token %}
-                  {{ form|crispy }}
-                  <button type="submit" class="btn btn-success btn-block mt-3">Login</button>
-                </form>
+    </head>
+    <body  style="background-color: #5c388f;">;">
+      
+      
+        <!-- logo -->
+        <div class="d-flex justify-content-center align-items-center mt-4">
+          <img src="{% static 'image/logo_192.png' %}" alt="Logo" style="width: 60px; height: 60px;" />
+          <h1 class="ml-3" style="color: white;">Orça Facil</h1>
+        </div>
+        
+        <!-- login -->
+        <div class="container mt-4">
+          <div class="row justify-content-center">
+            <div class="col-md-4">
+              <div class="card">
+                <div class="card-header text-center"><strong>Login</strong></div>
+                <div class="card-body">
+                  <form method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-success btn-block mt-3">Login</button>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    <!-- Footer -->
-    <footer class="footer fixed-bottom">
-      <div class="text-center p-3" style="background-color: #5c388f;">
-          <a class="text-white" target=blank href="https://github.com/phaleixo/orcamento">PROJETO PI II - UNIVESP - 2024</a>
-      </div>
-    </footer>
+      <!-- Footer -->
+      <footer class="footer navbar-fixed-bottomm">
+        <div class="text-center p-3" style="background-color: #5c388f;">
+            <a class="text-white" target="_blank" href="https://github.com/phaleixo/orcamento">PROJETO PI II - UNIVESP - 2024</a>
+        </div>
+      </footer>
 
-    <!-- link para o arquivo JavaScript do Bootstrap -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  </body>
+      <!-- link para o arquivo JavaScript do Bootstrap -->
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
 </html>

@@ -4,7 +4,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required,  user_passes_test
 from django.contrib.auth import logout
 from django.views.decorators.http import require_POST
-from .models import Pedido, CadastrarProduto
+from .models import Pedido, CadastrarProduto,CriarCliente
 from .forms import PedidoForm
 from datetime import date
 from datetime import datetime
@@ -15,7 +15,21 @@ from .forms import CadastroEmpresaForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.utils import timezone
+from django.http import JsonResponse
 
+def buscar_cliente(request):
+    cpf_cnpj = request.GET.get('cpf_cnpj', None)
+    if cpf_cnpj:
+        try:
+            cliente = CriarCliente.objects.get(cpf_cnpj=cpf_cnpj)
+            data = {
+                'nome_cliente': cliente.nome_cliente,
+                'contato': cliente.contato,
+            }
+            return JsonResponse(data)
+        except CriarCliente.DoesNotExist:
+            return JsonResponse({'error': 'Cliente não encontrado'}, status=404)
+    return JsonResponse({'error': 'CPF/CNPJ não informado'}, status=400)
 
 # Função para verificar se o usuário pertence ao grupo 'gestores'
 def is_in_group_gestores(user):
@@ -97,6 +111,8 @@ def parse_decimal_br(value):
 @login_required
 def criar_pedido(request):
     data_atual = datetime.now().date()  # Obter a data atual (sem hora)
+    cpfs_cnpjs = Pedido.objects.values_list('cpf_cnpj', flat=True)
+    produtos = CadastrarProduto.objects.all()
 
     if request.method == 'POST':
         form = PedidoForm(request.POST)
@@ -133,7 +149,8 @@ def criar_pedido(request):
     context = {
         'form': form,
         'data_atual': data_atual,
-        'produtos' : produtos,
+        'produtos' : produtos
+        
     }
 
     return render(request, 'criar_pedido.html', context)
@@ -243,3 +260,20 @@ def cadastrar_vendedores(request):
     
     return render(request, 'cadastrar_vendedores.html', {'form': form})
 
+
+@login_required
+def all_clientes(request):
+    cliente = CriarCliente.objects.all()
+    context = {
+        'cliente': cliente,
+    }
+    return render (request, 'all_clientes.html', context)
+
+@login_required
+def all_produtos(request):
+    produto = CadastrarProduto.objects.all()
+    print(produto)
+    context = {
+        'produto': produto,
+    }
+    return render (request, 'all_produtos.html', context)
