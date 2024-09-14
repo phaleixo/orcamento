@@ -28,6 +28,9 @@ class CadastrarProduto(models.Model):
     produto = models.CharField(max_length=100)
     valorproduto = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)  
     descricao_produto = models.TextField(max_length=100)  
+    def __str__(self):
+        return self.produto
+    
 
 class CriarCliente(models.Model):
     nome_cliente = models.CharField(

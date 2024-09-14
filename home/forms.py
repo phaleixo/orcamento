@@ -10,6 +10,11 @@ from django.contrib.auth.models import User
 
 
 class PedidoForm(forms.ModelForm):
+    produto = forms.ModelChoiceField(
+        queryset=CadastrarProduto.objects.all(),
+        label='Produto',
+        widget=forms.Select(attrs={'class': 'form-control'}),
+    )
     valor_unitario = forms.DecimalField(
         label='Valor Unit. R$',
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'R$ 0,00'}),

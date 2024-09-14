@@ -216,3 +216,14 @@ document.addEventListener('input', function(event) {
         calcularValorTotal();
     }
 });
+// Adicionar valor unitario 
+document.addEventListener('DOMContentLoaded', function() {
+    const produtoSelect = document.querySelector('#id_produto');
+    const valorUnitarioInput = document.querySelector('#valor_unitario');
+    
+    produtoSelect.addEventListener('change', function() {
+        const selectedOption = produtoSelect.options[produtoSelect.selectedIndex];
+        const valor = selectedOption.getAttribute('data-valor');
+        valorUnitarioInput.value = valor || '';
+    });
+});

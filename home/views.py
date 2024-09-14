@@ -4,7 +4,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required,  user_passes_test
 from django.contrib.auth import logout
 from django.views.decorators.http import require_POST
-from .models import Pedido
+from .models import Pedido, CadastrarProduto
 from .forms import PedidoForm
 from datetime import date
 from datetime import datetime
@@ -125,12 +125,14 @@ def criar_pedido(request):
             return redirect('all')  # Redirecionar para página de sucesso após salvar
         
     else:
+        produtos = CadastrarProduto.objects.all()
         form = PedidoForm()
 
     # Criar o contexto com o formulário e a data atual
     context = {
         'form': form,
         'data_atual': data_atual,
+        'produtos' : produtos,
     }
 
     return render(request, 'criar_pedido.html', context)
