@@ -34,7 +34,7 @@ git clone https://github.com/phaleixo/orcamento
 ```
 3 - Navegue até a pasta:
 ```
-cd orcamento
+cd orcamento ( se tiver um arquivo chamado 'sqlite',que é o banco de dados, apague ele. Logo vamos criar outro :)
 ```
 4 - Crie o ambiente virtual:
 ```
@@ -67,15 +67,40 @@ pip install -r requirements.txt
 python manage.py createsuperuser
 ```
 
-8 - Inicie o servidor
+8 - Faça as migrações e crie banco de dados sqlite ( se o comando python não funcionar use python3)
 ```
-python manage.py runserver
+python manage.py makemigrations
 ```
-8 - Abra o seu navegador e coloque o Endereço:
+
 ```
-http://127.0.0.1:8000/
+python manage.py migrate
 ```
-9 - Para adaptar ou melhorar o aplicativo, abra o vscode na pasta:
+
+9 - Inicie o servidor
+```
+python manage.py runserver 0.0.0.0:8080
+```
+10 - Abra o seu navegador e coloque o Endereço:
+```
+http:0.0.0.0:8080/admin
+```
+
+11 - na tela de login coloque o usuário e a senha que vc criou.
+
+12 - crie um grupo ' gestores ' e nas atribuições permita que ele possa criar usuários, modificar usuários e excluir usuários.
+
+13 - crie um usuário e atribua a este grupo ( esse vai ser o usuário que vai gerir todo o sistema).
+14 - crie um grupo chamado ' vendedores ' e salve.
+
+15 - pronto agora saia e abra o link: 
+
+```
+http:0.0.0.0:8080
+```
+16 - faça o login e na tela de gerenciamento vc pode cadastrar sua empresa, vendedores, produtos e clientes ( depois se vc logar como vendedor vai poder realizar orçamentos e cadastrar clientes
+
+
+17 - Para adaptar ou melhorar o aplicativo, abra o vscode na pasta:
 ```
 code .
 ```
