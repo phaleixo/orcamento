@@ -41,8 +41,6 @@ class CadastroEmpresaForm(forms.ModelForm):
         model = CadastroEmpresa
         fields = ['nome_empresa', 'cpf_cnpj', 'contato', 'end_empresa']
 
-
-
 class CustomUserCreationForm(UserCreationForm):
     full_name = forms.CharField(max_length=100, required=True, help_text='Nome completo')
 
@@ -50,3 +48,8 @@ class CustomUserCreationForm(UserCreationForm):
         model = User
         fields = ('username', 'full_name', 'password1', 'password2')
 
+# Forms para edicao de produtos
+class EditarProdutoForm(forms.ModelForm):
+    class Meta:
+        model = CadastrarProduto
+        fields = ['cod_produto', 'produto', 'valorproduto', 'descricao_produto']

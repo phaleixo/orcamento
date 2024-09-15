@@ -11,6 +11,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('excluir_pedido/<int:pedido_id>/', views.excluir_pedido, name='excluir_pedido'),
     path('excluir_produto/<int:cadastrarproduto_id>/', views.excluir_produto, name='excluir_produto'),
+    path('produtos/editar/<int:produto_id>/', views.editar_produto, name='editar_produto'),
     path('imprimir_pedido/<int:pedido_id>/', views.imprimir_pedido, name='imprimir_pedido'),
     path('criar_pedido/', criar_pedido, name='criar_pedido'),
     path('impressao/', views.imprimir_pedido, name="impressao"),

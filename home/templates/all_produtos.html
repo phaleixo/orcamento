@@ -73,6 +73,7 @@
                         <td>{{ produto.descricao_produto }}</td>
                         <td>
                             <a href="{% url 'excluir_produto' produto.id %}" class="btn btn-danger btn-sm" style="width: 60px; margin-bottom: 5px;">Excluir</a>
+                            <a href="{% url 'editar_produto' produto.id %}" class="btn btn-warning btn-sm" style="width: 60px; margin-bottom: 5px;">Editar</a>
                         </td>
                     </tr>
                     {% empty %}

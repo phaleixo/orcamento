@@ -17,6 +17,8 @@ from django.contrib import messages
 from django.utils import timezone
 from django.http import JsonResponse
 from django.contrib.auth.models import User
+from .forms import EditarProdutoForm
+from django.contrib.auth.models import Group
 
 
 # Função para buscar cliente e exibir em all_clientes.html
@@ -305,6 +307,24 @@ def excluir_produto(request, cadastrarproduto_id):
     
     return render(request, 'confirmar_exclusao_produto.html', {'produto': produto})
 
+# Editar Produtos
+@login_required
+def editar_produto(request, produto_id):
+    produto = get_object_or_404(CadastrarProduto, id=produto_id)
+    
+    if request.method == 'POST':
+        form = EditarProdutoForm(request.POST, instance=produto)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Produto atualizado com sucesso!')
+            return redirect('all_produtos')  # Redireciona de volta para a lista de produtos
+        else:
+            messages.error(request, 'Erro ao atualizar o produto. Verifique os dados.')
+    else:
+        form = EditarProdutoForm(instance=produto)
+    
+    return render(request, 'editar_produto.html', {'form': form, 'produto': produto})
+
 # Exibir todos os Vendedores
 @login_required
 def all_vendedores(request):
@@ -323,3 +343,4 @@ def configuracoes(request):
         'configuracoes': configuracoes,
     }
     return render (request, 'configuracoes.html', context)
+
