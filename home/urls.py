@@ -10,6 +10,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('excluir_pedido/<int:pedido_id>/', views.excluir_pedido, name='excluir_pedido'),
+    path('excluir_produto/<int:cadastrarproduto_id>/', views.excluir_produto, name='excluir_produto'),
     path('imprimir_pedido/<int:pedido_id>/', views.imprimir_pedido, name='imprimir_pedido'),
     path('criar_pedido/', criar_pedido, name='criar_pedido'),
     path('impressao/', views.imprimir_pedido, name="impressao"),
@@ -17,8 +18,10 @@ urlpatterns = [
     path('cadastrar_clientes/', views.cadastrar_clientes, name="cadastrar_clientes"),
     path('cadastrar_empresa/', views.cadastrar_empresa, name="cadastrar_empresa"),
     path('cadastrar_vendedores/', views.cadastrar_vendedores, name="cadastrar_vendedores"),
+    path('all_vendedores/', views.all_vendedores, name="all_vendedores"),
     path('all_produtos/', views.all_produtos, name="all_produtos"),
     path('all_clientes/', views.all_clientes, name="all_clientes"),
+    path('configuracoes/', views.configuracoes, name="configuracoes"),
     path('gerenciamento/', views.gerenciamento, name="gerenciamento"),
     path('buscar_cliente/', views.buscar_cliente, name='buscar_cliente'),
     

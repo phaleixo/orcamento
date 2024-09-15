@@ -73,5 +73,6 @@ class CadastroEmpresa(models.Model):
     null=True,          # Campo pode armazenar valor NULL no banco de dados
     validators=[MinLengthValidator(0)]  # Mínimo de 0 caracteres, o que significa opcional
     )
-
+    def __str__(self):
+        return f'{self.nome_empresa} - {self.cpf_cnpj} - {self.contato} - {self.end_empresa}'
 

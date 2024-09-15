@@ -9,10 +9,14 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Css -->
+    <link rel="stylesheet" href="{% static 'style/style.css' %}">
+    <!-- Fontes Anek -->
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Latin:wght@100..800&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar" style="background-color: #5c388f;">
+    <nav class="navbar">
         <div class="d-flex align-items-center">
             <div class="logo mr-2">
                 <img src="{% static 'image/logo_192.png' %}" style="width: 60px;" />
@@ -67,10 +71,13 @@
                         <td>{{ produto.produto }}</td>
                         <td>{{ produto.valorproduto }}</td>
                         <td>{{ produto.descricao_produto }}</td>
+                        <td>
+                            <a href="{% url 'excluir_produto' produto.id %}" class="btn btn-danger btn-sm" style="width: 60px; margin-bottom: 5px;">Excluir</a>
+                        </td>
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="5">Nenhum cliente encontrado.</td>
+                        <td colspan="5">Nenhum produto encontrado.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -80,13 +87,12 @@
     <!-- Botão Voltar -->
     <div class="container mt-4">
         <div class="row">
-            <div class="col-12">
-            <a href="javascript:window.history.back();" class="btn btn-secondary" style="margin-left: 1rem;">Voltar</a>
+            <a href={% url 'gerenciamento' %} class="btn btn-secondary" style="margin-left: 1rem;">Voltar</a>
         </div>
     </div>
     <!-- Footer -->
     <footer class="footer fixed-bottom">
-        <div class="text-center p-3" style="background-color: #5c388f;">
+        <div class="text-center p-3 rodape">
             <a class="text-white" target="_blank" href="https://github.com/phaleixo/orcamento">PROJETO PI II - UNIVESP - 2024</a>
         </div>
     </footer>

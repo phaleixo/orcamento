@@ -4,7 +4,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required,  user_passes_test
 from django.contrib.auth import logout
 from django.views.decorators.http import require_POST
-from .models import Pedido, CadastrarProduto,CriarCliente
+from .models import CadastroEmpresa, Pedido, CadastrarProduto,CriarCliente
 from .forms import PedidoForm
 from datetime import date
 from datetime import datetime
@@ -16,7 +16,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.utils import timezone
 from django.http import JsonResponse
+from django.contrib.auth.models import User
 
+
+# Função para buscar cliente e exibir em all_clientes.html
 def buscar_cliente(request):
     cpf_cnpj = request.GET.get('cpf_cnpj', None)
     if cpf_cnpj:
@@ -35,6 +38,7 @@ def buscar_cliente(request):
 def is_in_group_gestores(user):
     return user.groups.filter(name='gestores').exists()
 
+#Tela inicial de Vendedores onde é possivel cadastrar clientes e fazer orçamentos
 @login_required
 def all(request):
     # Se o usuário for do grupo 'gestores', redirecionar para a página de gerenciamento
@@ -61,6 +65,7 @@ def all(request):
 
     return render(request, 'all.html', context)
 
+# Função para Logout
 @require_POST
 def custom_logout(request):
     logout(request)
@@ -70,6 +75,8 @@ def custom_logout(request):
 def is_in_group_gestores(user):
     return user.groups.filter(name='gestores').exists()
 
+
+# Tela incial de Gestores onde é Gerenciamento de Produtos, Vendedores e Clientes
 @login_required
 @user_passes_test(is_in_group_gestores)
 def gerenciamento(request):
@@ -103,11 +110,11 @@ def login(request):
     
     return render(request, 'login.html', {'form': form})
 
-
 # Função para converter valor monetário brasileiro em Decimal
 def parse_decimal_br(value):
     return Decimal(value.replace('.', '').replace(',', '.'))
 
+# Criar novo Orcamento
 @login_required
 def criar_pedido(request):
     data_atual = datetime.now().date()  # Obter a data atual (sem hora)
@@ -155,9 +162,8 @@ def criar_pedido(request):
 
     return render(request, 'criar_pedido.html', context)
 
-
+# Função para converter valor monetário brasileiro em Decimal.
 def parse_decimal_br(value):
-    """Função para converter valor monetário brasileiro em Decimal."""
     try:
         # Converter value para string se ainda não for uma string
         if not isinstance(value, str):
@@ -170,7 +176,8 @@ def parse_decimal_br(value):
         return decimal_value
     except InvalidOperation:
         raise ValueError("Valor monetário inválido")
-    
+
+# Excluir Orcamento    
 @login_required
 def excluir_pedido(request, pedido_id):
     # Obter o pedido pelo ID
@@ -181,6 +188,7 @@ def excluir_pedido(request, pedido_id):
     
     return render(request, 'confirmar_exclusao.html', {'pedido': pedido})# Se não for um POST, renderizar um template de confirmação de exclusão
 
+# Imprimir Orcamento
 @login_required
 def imprimir_pedido(request, pedido_id):
     pedido = Pedido.objects.get(pk=pedido_id)
@@ -188,7 +196,8 @@ def imprimir_pedido(request, pedido_id):
         'pedido': pedido
     }
     return render(request, 'impressao.html', context)# Redirecionar para a página de impressão
-   
+
+# Cadastrar Novos Produtos   
 @login_required
 def cadastrar_produtos(request):
     if request.method == 'POST':
@@ -205,6 +214,7 @@ def cadastrar_produtos(request):
     
     return render(request, 'cadastrar_produtos.html', {'form': form})
 
+# Cadastrar Novos Clientes
 @login_required
 def cadastrar_clientes(request):
     if request.method == 'POST':
@@ -221,6 +231,7 @@ def cadastrar_clientes(request):
     
     return render(request, 'cadastrar_clientes.html', {'form': form})
 
+# Cadastrar Empresa emissora dos orcamentos
 @login_required
 def cadastrar_empresa(request):
     if request.method == 'POST':
@@ -236,7 +247,8 @@ def cadastrar_empresa(request):
         form = CadastroEmpresaForm()
     
     return render(request, 'cadastrar_empresa.html', {'form': form})
-    
+
+# Cadastrar Novos Vendedores  
 @login_required
 def cadastrar_vendedores(request):
     if request.method == 'POST':
@@ -250,17 +262,21 @@ def cadastrar_vendedores(request):
             user.last_name = cod_vendedor
             user.save()
 
-            messages.success(request, 'Vendedor cadastrado com sucesso!')
+            # Adiciona o usuário ao grupo "Vendedores"
+            grupo_vendedores = Group.objects.get(name='vendedores')
+            user.groups.add(grupo_vendedores)
+            user.save()
+
+            messages.success(request, 'Vendedor cadastrado com sucesso e adicionado ao grupo Vendedores!')
             
         else:
-            print(form.errors)
             messages.error(request, 'Erro ao cadastrar vendedor. Verifique os dados.')
     else:
         form = UserCreationForm()
     
     return render(request, 'cadastrar_vendedores.html', {'form': form})
 
-
+# Exibir todos os clientes
 @login_required
 def all_clientes(request):
     cliente = CriarCliente.objects.all()
@@ -269,11 +285,41 @@ def all_clientes(request):
     }
     return render (request, 'all_clientes.html', context)
 
+# Exibir todos os Produtos
 @login_required
 def all_produtos(request):
     produto = CadastrarProduto.objects.all()
-    print(produto)
     context = {
         'produto': produto,
     }
     return render (request, 'all_produtos.html', context)
+
+# Excluir Produto    
+@login_required
+def excluir_produto(request, cadastrarproduto_id):
+    # Obter o pedido pelo ID
+    produto = get_object_or_404(CadastrarProduto, pk=cadastrarproduto_id)
+    if request.method == 'POST':# Verificar se o formulário foi submetido via POST
+        produto.delete() # Processar a exclusão do pedido
+        return redirect('all_produtos')# Redirecionar para a página de inicio
+    
+    return render(request, 'confirmar_exclusao_produto.html', {'produto': produto})
+
+# Exibir todos os Vendedores
+@login_required
+def all_vendedores(request):
+    vendedor = User.objects.filter(groups__name='vendedores')
+    context = {
+        'vendedor': vendedor,
+    }
+    return render (request, 'all_vendedores.html', context)
+
+# Configuracoes da empresa
+@login_required
+def configuracoes(request):
+    configuracoes = CadastroEmpresa.objects.all()
+    print(configuracoes)
+    context = {
+        'configuracoes': configuracoes,
+    }
+    return render (request, 'configuracoes.html', context)

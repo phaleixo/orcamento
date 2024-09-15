@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro Clientes</title>
+    <title>Configurações</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome -->
@@ -49,32 +49,29 @@
                 {% endfor %}
             </div>
         {% endif %}
-        <h2 class="mb-4">Cadastro Clientes</h2>
-        <div class="d-flex justify-content-center p-2">
-            <a href="{% url 'cadastrar_clientes' %}" class="btn btn-primary mx-2" role="button">Cadastrar Clientes</a>
-        </div>
+        <h2 class="mb-4">Dados da Empresa</h2>
         <div class="table-responsive p-2">
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Nome do Cliente</th>
-                        <th>CPF/CNPJ</th>
+                        <th>Nome da Empresa</th>
+                        <th>CNPJ</th>
                         <th>Contato</th>
-                        <th>Detalhes</th>
+                        <th>Endereço</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for cliente in cliente %}
+                    {% for configuracoes in configuracoes %}
                     <tr>
-                        <td>{{ cliente.nome_cliente }}</td>
-                        <td>{{ cliente.cpf_cnpj }}</td>
-                        <td>{{ cliente.contato }}</td>
-                        <td>{{ cliente.detal_cliente }}</td>
+                        <td>{{ configuracoes.nome_empresa }}</td>
+                        <td>{{ configuracoes.cpf_cnpj }}</td>
+                        <td>{{ configuracoes.contato }}</td>
+                        <td>{{ configuracoes.end_empresa }}</td>
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="5">Nenhum cliente encontrado.</td>
+                        <td colspan="5">Nenhuma empresa encontrada. <a href="{% url 'cadastrar_empresa' %}" >Clique aqui para cadastrar</a> </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -84,6 +81,7 @@
     <!-- Botão Voltar -->
     <div class="container mt-4">
         <div class="row">
+            <div class="col-12">
             <a href={% url 'gerenciamento' %} class="btn btn-secondary" style="margin-left: 1rem;">Voltar</a>
         </div>
     </div>

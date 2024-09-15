@@ -1,0 +1,10 @@
+.titulo {
+    font-family: 'Anek Latin';
+    font-size: 48px;
+
+}
+
+.navbar, .rodape, .cordefundologin {
+    background-color: #4b0082;
+        
+}
