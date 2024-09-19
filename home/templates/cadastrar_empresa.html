@@ -64,6 +64,13 @@
                         {% csrf_token %}
                         <div class="form-row mb-3">
                             <div class="col-12">
+                                <label for="id_logo">Logo da Empresa:</label>
+                                <input type="file" class="form-control {% if form.logo.errors %}is-invalid{% endif %}" id="id_logo" name="logo">
+                                {% for error in form.logo.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            <div class="col-12">
                                 <label for="id_nome_empresa">Nome da Empresa:</label>
                                 <input type="text" class="form-control {% if form.nome_empresa.errors %}is-invalid{% endif %}" id="id_nome_empresa" name="nome_empresa" value="{{ form.nome_empresa.value|default:'' }}" required>
                                 {% for error in form.nome_empresa.errors %}

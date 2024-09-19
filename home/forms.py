@@ -39,7 +39,7 @@ class CriarClienteForm(forms.ModelForm):
 class CadastroEmpresaForm(forms.ModelForm):
     class Meta:
         model = CadastroEmpresa
-        fields = ['nome_empresa', 'cpf_cnpj', 'contato', 'end_empresa']
+        fields = ['nome_empresa','logo', 'cpf_cnpj', 'contato', 'end_empresa',]
 
 class CustomUserCreationForm(UserCreationForm):
     full_name = forms.CharField(max_length=100, required=True, help_text='Nome completo')
@@ -53,3 +53,14 @@ class EditarProdutoForm(forms.ModelForm):
     class Meta:
         model = CadastrarProduto
         fields = ['cod_produto', 'produto', 'valorproduto', 'descricao_produto']
+
+# Forms para edicao de vendedores
+class EditarVendedorForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['last_name', 'first_name', 'username']
+        labels = {
+            'last_name': 'Código do Vendedor',  # Personalizando o rótulo
+            'first_name': 'Nome do Vendedor',
+            'username': 'Nome de Usuário',
+        }       

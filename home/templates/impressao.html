@@ -8,35 +8,35 @@
     </head>
     
     <body class="px-3">
-        <header class="px-3">
-            
-            <img src="{% static 'image/logo_grafica_small.png' %}" />
-            <p> Av. Independência, 389 - Vila Seixas, Ribeirão Preto - SP, Cep:14020-010 <strong>Telefone:</strong> (16) 3101-5451</p>
-            <p class="col py-2 px-md-0" id="dataAtual"></p>
+        <header class="px-3 d-flex align-items-center">
+            <img src="{{ configuracoes.logo.url }}" alt="Logo da Empresa"/>
+            <div class="ml-3">
+                <p>Av. Independência, 389 - Vila Seixas, Ribeirão Preto - SP, Cep: 14020-010 <strong>Telefone:</strong> (16) 3101-5451</p>
+                <p id="dataAtual"></p>
+            </div>
         </header>
         <div>
-            <h5 class="text-center col py-2 px-md-5">ORCAMENTO N°:{{ pedido.data|date:"Ydm" }}-{{ pedido.id }}</h5> 
-            <h5 class="text-center col py-3 px-md-0">Dados do Cliente:</h5>
+            <h5 class="text-center py-2">ORÇAMENTO N°: {{ pedido.data|date:"Ydm" }}-{{ pedido.id }}</h5> 
+            <h5 class="text-center py-3">Dados do Cliente:</h5>
         </div>  
         <p>
-            <span class="col py-2 px-md-0 text-nowrap"><strong>NOME:</strong> {{ pedido.nome_cliente|upper }}</span>
-            <span class="col py-2 px-md-3 text-nowrap"><strong>CPF/CNPJ:</strong> {{ pedido.cpf_cnpj }}</span>
-            <span class="col py-2 px-md-3 text-nowrap"><strong>TELEFONE:</strong> {{ pedido.contato }}</span>
-            <span class="col py-3 px-md-5 text-nowrap"><strong>DATA DO PEDIDO:</strong> {{ pedido.data|date:"d/m/Y" }}</span>
+            <span class="text-nowrap"><strong>NOME:</strong> {{ pedido.nome_cliente|upper }}</span>
+            <span class="text-nowrap"><strong>CPF/CNPJ:</strong> {{ pedido.cpf_cnpj }}</span>
+            <span class="text-nowrap"><strong>TELEFONE:</strong> {{ pedido.contato }}</span>
+            <span class="text-nowrap"><strong>DATA DO PEDIDO:</strong> {{ pedido.data|date:"d/m/Y" }}</span>
         </p>
         
         <table class="table table-bordered px-3">
-            
-            <tbody>
-                
-                <tr >
+            <thead>
+                <tr>
                     <th class="text-center table-active">Quant.</th>
                     <th class="text-center table-active">Produtos</th>
-                    <th class="text-center table-active">Descriçao Impresso</th>
+                    <th class="text-center table-active">Descrição Impresso</th>
                     <th class="text-center table-active">Valor Unitário</th>
                     <th class="text-center table-active">Valor Subtotal</th>
-                    
                 </tr>
+            </thead>
+            <tbody>
                 <tr>
                     <td class="text-center">{{ pedido.quantidade }}</td>
                     <td class="text-center">{{ pedido.produto }}</td>
@@ -44,30 +44,26 @@
                     <td class="text-center">R$ {{ pedido.valor_unitario }}</td>
                     <td class="text-center">R$ {{ pedido.valor_total }}</td>
                 </tr>
-                
                 <tr class="table table-bordered">
                     <th class="text-center table-active" colspan="5">Descrição do Pedido</th>
-                </tr>        
-                <tr >    
-                    <td  class="multiline" colspan="5" rowspan="3">{{ pedido.descricao_pedido }}</td>
+                </tr>
+                <tr>
+                    <td class="multiline" colspan="5" rowspan="3">{{ pedido.descricao_pedido }}</td>
                 </tr>
             </tbody>
-            
-            <tfoot class="table table-bordered" >
-                <tr> 
-                    <th class="text-right"colspan="4" >Total: </th>
+            <tfoot>
+                <tr>
+                    <th class="text-right" colspan="4">Total:</th>
                     <th class="text-center">R$ {{ pedido.valor_total }}</th>
                 </tr>
             </tfoot>
         </table>
         <div class="float-right d-print-none">
-                <button type="button" class="btn btn btn-success btn-imprimir" onclick="window.print()">Imprimir / Salvar PDF</button>
+            <button type="button" class="btn btn-success" onclick="window.print()">Imprimir / Salvar PDF</button>
         </div>
-         <!-- Importar Bootstrap JavaScript -->
+        <!-- Importar Bootstrap JavaScript -->
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="{% static 'scripts/impressao.js' %}"></script>
     </body> 
-    
-    
 </html>

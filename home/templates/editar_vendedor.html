@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Editar Dados da Empresa</title>
+        <title>Editar Produtos</title>
         <!-- Bootstrap CSS -->
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
         <!-- FontAwesome -->
@@ -41,20 +41,29 @@
             </div>
         </nav>
         <div class="container d-flex justify-content-center align-items-center">
-            <div class="col-md-12">
-                <h1 class="text-center mb-4 mt-4">Configurações da Empresa</h1>
-                {% load crispy_forms_tags %}
-                <form method="post" enctype="multipart/form-data">  <!-- Necessário para upload de arquivos -->
+            <div class="col-md-6">
+                <h1 class="text-center mb-4 mt-4">Editar Produto</h1>
+
+                <!-- Formulário de Edição -->
+                <form method="post" class=" p-2 border rounded">
                     {% csrf_token %}
-                    {{ form|crispy }}
-        
-                    <div class="form-group">
+                    {% load crispy_forms_tags %}
+                    {{ form|crispy }} <!-- Crispy Forms aplicado para estilizar o formulário -->
+
+                    <!-- Botões de Ação -->
+                    <div class="text-center mt-4">
                         <button type="submit" class="btn btn-success">Salvar</button>
-                        <a href="javascript:window.history.back();" class="btn btn-secondary">Voltar</a>
+                        <a href="{% url 'all_vendedores' %}" class="btn btn-secondary ml-2">Voltar</a>
                     </div>
                 </form>
-            </div> 
+            </div>
         </div>
+        <!-- Footer -->
+        <footer class="footer fixed-bottom">
+            <div class="text-center p-3 rodape">
+                <a class="text-white" target="_blank" href="https://github.com/phaleixo/orcamento">PROJETO PI II - UNIVESP - 2024</a>
+            </div>
+        </footer>
         <!-- Bootstrap JS e Popper.js -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>

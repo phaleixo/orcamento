@@ -71,6 +71,9 @@
                         <td>{{ cliente.cpf_cnpj }}</td>
                         <td>{{ cliente.contato }}</td>
                         <td>{{ cliente.detal_cliente }}</td>
+                        <td>
+                            <a href="{% url 'editar_cliente' cliente.id %}" class="btn btn-warning btn-sm" style="width: 60px; margin-bottom: 5px;">Editar</a>
+                        </td>
                     </tr>
                     {% empty %}
                     <tr>

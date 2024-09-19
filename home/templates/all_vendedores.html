@@ -69,6 +69,9 @@
                         <td>{{ vendedor.last_name }}</td>
                         <td>{{ vendedor.first_name }}</td>
                         <td>{{ vendedor.username }}</td>
+                        <td>
+                            <a href="{% url 'editar_vendedor' vendedor.id %}" class="btn btn-warning btn-sm" style="width: 60px; margin-bottom: 5px;">Editar</a>
+                        </td>
                      </tr>
                     {% empty %}
                     <tr>

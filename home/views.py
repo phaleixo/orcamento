@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required,  user_passes_test
 from django.contrib.auth import logout
 from django.views.decorators.http import require_POST
 from .models import CadastroEmpresa, Pedido, CadastrarProduto,CriarCliente
-from .forms import PedidoForm
+from .forms import EditarVendedorForm, PedidoForm
 from datetime import date
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
@@ -19,7 +19,6 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from .forms import EditarProdutoForm
 from django.contrib.auth.models import Group
-
 
 # Função para buscar cliente e exibir em all_clientes.html
 def buscar_cliente(request):
@@ -76,7 +75,6 @@ def custom_logout(request):
 # Função para verificar se o usuário pertence ao grupo 'gestores'      
 def is_in_group_gestores(user):
     return user.groups.filter(name='gestores').exists()
-
 
 # Tela incial de Gestores onde é Gerenciamento de Produtos, Vendedores e Clientes
 @login_required
@@ -194,9 +192,13 @@ def excluir_pedido(request, pedido_id):
 @login_required
 def imprimir_pedido(request, pedido_id):
     pedido = Pedido.objects.get(pk=pedido_id)
+    configuracoes = CadastroEmpresa.objects.first()
+    print(configuracoes.logo.url)
     context = {
-        'pedido': pedido
+        'pedido': pedido,
+        'configuracoes': configuracoes
     }
+    print(configuracoes)
     return render(request, 'impressao.html', context)# Redirecionar para a página de impressão
 
 # Cadastrar Novos Produtos   
@@ -237,17 +239,16 @@ def cadastrar_clientes(request):
 @login_required
 def cadastrar_empresa(request):
     if request.method == 'POST':
-        form = CadastroEmpresaForm(request.POST)
+        form = CadastroEmpresaForm(request.POST, request.FILES)  # Inclua request.FILES
         if form.is_valid():
             form.save()
             messages.success(request, 'Empresa cadastrada com sucesso!')
-            
         else:
             print(form.errors)
             messages.error(request, 'Erro ao cadastrar Empresa. Verifique os dados e tente novamente.')    
     else:
         form = CadastroEmpresaForm()
-    
+
     return render(request, 'cadastrar_empresa.html', {'form': form})
 
 # Cadastrar Novos Vendedores  
@@ -278,6 +279,26 @@ def cadastrar_vendedores(request):
     
     return render(request, 'cadastrar_vendedores.html', {'form': form})
 
+# Editar dados do vendedor 
+@login_required
+def editar_vendedor(request, vendedor_id):
+    vendedor = get_object_or_404(User, id=vendedor_id)
+    
+    if request.method == 'POST':
+        form = EditarVendedorForm(request.POST, instance=vendedor)
+        if form.is_valid():
+            form.save()
+            return redirect('all_vendedores')  # Redireciona para a lista de vendedores
+    else:
+        form = EditarVendedorForm(instance=vendedor)
+    
+    context = {
+        'form': form,
+        'vendedor': vendedor,
+    }
+    
+    return render(request, 'editar_vendedor.html', context)
+
 # Exibir todos os clientes
 @login_required
 def all_clientes(request):
@@ -286,6 +307,26 @@ def all_clientes(request):
         'cliente': cliente,
     }
     return render (request, 'all_clientes.html', context)
+
+# Editar dados do cliente 
+@login_required
+def editar_cliente(request, cliente_id):
+    cliente = get_object_or_404(CriarCliente, id=cliente_id)
+    
+    if request.method == 'POST':
+        form = CriarClienteForm(request.POST, instance=cliente)
+        if form.is_valid():
+            form.save()
+            return redirect('all_clientes')  # Redireciona para a lista de clientes
+    else:
+        form = CriarClienteForm(instance=cliente)
+    
+    context = {
+        'form': form,
+        'cliente': cliente,
+    }
+    
+    return render(request, 'editar_cliente.html', context)
 
 # Exibir todos os Produtos
 @login_required
@@ -337,10 +378,21 @@ def all_vendedores(request):
 # Configuracoes da empresa
 @login_required
 def configuracoes(request):
-    configuracoes = CadastroEmpresa.objects.all()
-    print(configuracoes)
-    context = {
-        'configuracoes': configuracoes,
-    }
-    return render (request, 'configuracoes.html', context)
+    # Carregar a primeira empresa cadastrada (ou modifique conforme sua necessidade)
+    empresa = get_object_or_404(CadastroEmpresa, pk=1)  # Carrega a empresa com o ID 1, ajuste conforme necessário
 
+    if request.method == 'POST':
+        form = CadastroEmpresaForm(request.POST, request.FILES, instance=empresa)  # Carregar instância para edição
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Configurações da empresa atualizadas com sucesso!')
+            return redirect('configuracoes')  # Redireciona após salvar
+        else:
+            messages.error(request, 'Erro ao atualizar as configurações da empresa.')
+    else:
+        form = CadastroEmpresaForm(instance=empresa)  # Preencher o formulário com os dados da empresa
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'configuracoes.html', context)
