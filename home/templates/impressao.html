@@ -7,11 +7,11 @@
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">   
     </head>
     
-    <body class="px-3">
+    <body class="p-3">
         <header class="px-3 d-flex align-items-center">
             <img src="{{ configuracoes.logo.url }}" alt="Logo da Empresa" width="150" height="150">
             <div class="ml-3">
-                <p>Av. Independência, 389 - Vila Seixas, Ribeirão Preto - SP, Cep: 14020-010 <strong>Telefone:</strong> (16) 3101-5451</p>
+                <p>{{ configuracoes.end_empresa }} <strong>Telefone:</strong> {{ configuracoes.contato }}</p>
                 <p id="dataAtual"></p>
             </div>
         </header>
@@ -20,9 +20,9 @@
             <h5 class="text-center py-3">Dados do Cliente:</h5>
         </div>  
         <p>
-            <span class="text-nowrap"><strong>NOME:</strong> {{ pedido.nome_cliente|upper }}</span>
-            <span class="text-nowrap"><strong>CPF/CNPJ:</strong> {{ pedido.cpf_cnpj }}</span>
-            <span class="text-nowrap"><strong>TELEFONE:</strong> {{ pedido.contato }}</span>
+            <span class="text-nowrap me-5"><strong>NOME:</strong> {{ pedido.nome_cliente|upper }}</span>
+            <span class="text-nowrap me-5"><strong>CPF/CNPJ:</strong> {{ pedido.cpf_cnpj }}</span>
+            <span class="text-nowrap me-5"><strong>TELEFONE:</strong> {{ pedido.contato }}</span>
             <span class="text-nowrap"><strong>DATA DO PEDIDO:</strong> {{ pedido.data|date:"d/m/Y" }}</span>
         </p>
         

@@ -190,15 +190,13 @@ def excluir_pedido(request, pedido_id):
 
 # Imprimir Orcamento
 @login_required
-def imprimir_pedido(request, pedido_id):
+def imprimir_pedido(request, pedido_id):    
     pedido = Pedido.objects.get(pk=pedido_id)
     configuracoes = CadastroEmpresa.objects.first()
-    print(configuracoes.logo.url)
     context = {
         'pedido': pedido,
         'configuracoes': configuracoes
     }
-    print(configuracoes)
     return render(request, 'impressao.html', context)# Redirecionar para a página de impressão
 
 # Cadastrar Novos Produtos   
