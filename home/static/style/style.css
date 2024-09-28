@@ -1,10 +1,26 @@
+body {
+    display: flex;
+    flex-direction: column;
+}
 .titulo {
-    font-family: 'Anek Latin';
-    font-size: 48px;
-
+    font-family: 'Anek Latin', sans-serif;
+    font-size: 52px;
+    color: #373737;
+}
+.logo {
+    width: 60px;
+}
+.navbar, .cordefundologin {
+    color: #202020;        
+}
+   
+.btn-outline-danger {
+    background-color: #ff00001b;
+}
+.btn-outline-info {
+    background-color: #00bfff1c;
+}
+.btn-outline-warning {
+    background-color: #eeff0018;
 }
 
-.navbar, .rodape, .cordefundologin {
-    background-color: #4b0082;
-        
-}
