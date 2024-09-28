@@ -1,6 +1,7 @@
 body {
     display: flex;
     flex-direction: column;
+
 }
 .titulo {
     font-family: 'Anek Latin', sans-serif;
