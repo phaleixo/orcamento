@@ -53,13 +53,18 @@
     </nav>
     <div class="container mt-4">
         <!-- Exibição de mensagens de erro -->
-        {% if messages %}
-            <div class="alert alert-danger" role="alert">
+        <div class="container mt-4">
+            {% if messages %}
                 {% for message in messages %}
-                    {{ message }}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 {% endfor %}
-            </div>
-        {% endif %}
+            {% endif %}
+        </div>
         <h2 class="mb-4">Cadastro Clientes</h2>
         <div class="d-flex justify-content-center p-2">
             <a href="{% url 'cadastrar_clientes' %}" class="btn btn-primary mx-2" role="button">Cadastrar Clientes</a>
