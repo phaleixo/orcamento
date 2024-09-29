@@ -224,10 +224,8 @@ def cadastrar_clientes(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Cliente cadastrado com sucesso!')
-            
         else:
-            print(form.errors)
-            messages.error(request, 'Erro ao cadastrar cliente. Verifique os dados e tente novamente.')    
+            messages.error(request, 'Erro ao cadastrar cliente. Verifique os dados e tente novamente.')
     else:
         form = CriarClienteForm()
     
@@ -373,11 +371,16 @@ def all_vendedores(request):
     }
     return render (request, 'all_vendedores.html', context)
 
-# Configuracoes da empresa
+# Configurações da empresa
 @login_required
 def configuracoes(request):
-    # Carregar a primeira empresa cadastrada (ou modifique conforme sua necessidade)
-    empresa = get_object_or_404(CadastroEmpresa, pk=1)  # Carrega a empresa com o ID 1, ajuste conforme necessário
+    # Verifica se existe pelo menos uma empresa cadastrada
+    if not CadastroEmpresa.objects.exists():
+        messages.info(request, 'Nenhuma empresa cadastrada. Redirecionando para cadastro.')
+        return redirect('cadastrar_empresa')  # Ajuste para o nome correto da sua URL de cadastro
+
+    # Se houver empresas, carrega a primeira (ou você pode ajustar essa lógica conforme necessário)
+    empresa = CadastroEmpresa.objects.first()  # Obtém a primeira empresa cadastrada
 
     if request.method == 'POST':
         form = CadastroEmpresaForm(request.POST, request.FILES, instance=empresa)  # Carregar instância para edição

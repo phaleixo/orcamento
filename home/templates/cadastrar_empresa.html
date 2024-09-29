@@ -81,39 +81,83 @@
                                     <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                             </div>
-                            <div class="col-12">
+                            <div class="col-6">
                                 <label for="id_nome_empresa">Nome da Empresa:</label>
                                 <input type="text" class="form-control {% if form.nome_empresa.errors %}is-invalid{% endif %}" id="id_nome_empresa" name="nome_empresa" value="{{ form.nome_empresa.value|default:'' }}" required>
                                 {% for error in form.nome_empresa.errors %}
                                     <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                             </div>
-                            <div class="col">
+                            <div class="col-3">
                                 <label for="id_cpf_cnpj">CPF/CNPJ:</label>
                                 <input type="text" class="form-control {% if form.cpf_cnpj.errors %}is-invalid{% endif %}" id="id_cpf_cnpj" name="cpf_cnpj" value="{{ form.cpf_cnpj.value|default:'' }}" required>
                                 {% for error in form.cpf_cnpj.errors %}
                                     <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                             </div>
-                            <div class="col">
+                            <div class="col-3">
                                 <label for="id_contato">Contato:</label>
                                 <input type="text" class="form-control {% if form.contato.errors %}is-invalid{% endif %}" id="id_contato" name="contato" value="{{ form.contato.value|default:'' }}" required>
                                 {% for error in form.contato.errors %}
                                     <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                             </div>
-                            <div class="col-12">
-                                <label for="end_empresa">Endereço:</label>
-                                <textarea class="form-control {% if form.end_empresa.errors %}is-invalid{% endif %}" id="end_empresa" name="end_empresa" rows="3" required>{{ form.end_empresa.value|default:'' }}</textarea>
-                                {% for error in form.end_empresa.errors %}
+                             
+                            <div class="col-2">
+                                <label for="id_cep">CEP:</label>
+                                <input type="text" class="form-control {% if form.cep.errors %}is-invalid{% endif %}" id="id_cep" name="cep" value="{{ form.cep.value|default:'' }}" required>
+                                {% for error in form.cep.errors %}
                                     <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                             </div>
+        
+                            <div class="col-3">
+                                <label for="id_logradouro">Logradouro:</label>
+                                <input type="text" class="form-control {% if form.logradouro.errors %}is-invalid{% endif %}" id="id_logradouro" name="logradouro" value="{{ form.logradouro.value|default:'' }}" required>
+                                {% for error in form.logradouro.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+        
+                            <div class="col-1">
+                                <label for="id_numero">Número:</label>
+                                <input type="text" class="form-control {% if form.numero.errors %}is-invalid{% endif %}" id="id_numero" name="numero" value="{{ form.numero.value|default:'' }}" required>
+                                {% for error in form.numero.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            
+                                    
+                            <div class="col-2">
+                                <label for="id_bairro">Bairro:</label>
+                                <input type="text" class="form-control {% if form.bairro.errors %}is-invalid{% endif %}" id="id_bairro" name="bairro" value="{{ form.bairro.value|default:'' }}" required>
+                                {% for error in form.bairro.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+            
+                            <div class="col-3">
+                                <label for="id_cidade">Cidade:</label>
+                                <input type="text" class="form-control {% if form.cidade.errors %}is-invalid{% endif %}" id="id_cidade" name="cidade" value="{{ form.cidade.value|default:'' }}" required>
+                                {% for error in form.cidade.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+        
+                            <div class="col-1">
+                                <label for="id_estado">Estado:</label>
+                                <input type="text" class="form-control {% if form.estado.errors %}is-invalid{% endif %}" id="id_estado" name="estado" value="{{ form.estado.value|default:'' }}" required>
+                                {% for error in form.estado.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            
+        
                         </div>
                         <!-- Botões Salvar e Voltar -->
                         <div class="form-group">
                             <button type="submit" class="btn btn-success">Salvar</button>
-                            <a href="javascript:window.history.back();" class="btn btn-secondary">Voltar</a>
+                            <a href="{% url 'gerenciamento' %}" class="btn btn-secondary ml-2">Voltar</a>
                         </div>
                     </form>
                 </div>
@@ -129,5 +173,6 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="{% static 'scripts/acessibilidade.js' %}"></script>
+        <script src="{% static 'scripts/viacep.js' %}"></script>
     </body>
 </html>

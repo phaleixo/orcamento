@@ -11,7 +11,7 @@
         <header class="px-3 d-flex align-items-center">
             <img src="{{ configuracoes.logo.url }}" alt="Logo da Empresa" width="150" height="150">
             <div class="ml-3">
-                <p>{{ configuracoes.end_empresa }} <strong>Telefone:</strong> {{ configuracoes.contato }}</p>
+                <p>{{ configuracoes.logradouro }} {{ configuracoes.numero }} {{ configuracoes.bairro }} {{ configuracoes.cidade }} {{ configuracoes.estado }} <strong>Telefone:</strong> {{ configuracoes.contato }}</p>
                 <p id="dataAtual"></p>
             </div>
         </header>
@@ -19,12 +19,12 @@
             <h5 class="text-center py-2">ORÇAMENTO N°: {{ pedido.data|date:"Ydm" }}-{{ pedido.id }}</h5> 
             <h5 class="text-center py-3">Dados do Cliente:</h5>
         </div>  
-        <p>
-            <span class="text-nowrap me-5"><strong>NOME:</strong> {{ pedido.nome_cliente|upper }}</span>
-            <span class="text-nowrap me-5"><strong>CPF/CNPJ:</strong> {{ pedido.cpf_cnpj }}</span>
-            <span class="text-nowrap me-5"><strong>TELEFONE:</strong> {{ pedido.contato }}</span>
-            <span class="text-nowrap"><strong>DATA DO PEDIDO:</strong> {{ pedido.data|date:"d/m/Y" }}</span>
-        </p>
+        <div>
+            <span class="col-3"><strong>NOME:</strong> {{ pedido.nome_cliente|upper }}</span>
+            <span class="col-3"><strong>CPF/CNPJ:</strong> {{ pedido.cpf_cnpj }}</span>
+            <span class="col-3"><strong>TELEFONE:</strong> {{ pedido.contato }}</span>
+            <span class="col-3"><strong>DATA DO PEDIDO:</strong> {{ pedido.data|date:"d/m/Y" }}</span>
+        </div>
         
         <table class="table table-bordered px-3">
             <thead>

@@ -19,7 +19,7 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
             <div class="d-flex align-items-center ml-3  ">
                 <div class="logo mr-2">
-                    <img class= "logo" src="{% static 'image/logo_192_dark.png' %}"/>
+                    <img class="logo" src="{% static 'image/logo_192_dark.png' %}"/>
                 </div>
                 <h1>Orça Facil</h1>
             </div>
@@ -39,7 +39,7 @@
                     </li>
                     
                     <li>
-                        <a class="nav-link" href="{% url 'configuracoes' %}" >Configurações</a>
+                        <a class="nav-link" href="{% url 'configuracoes' %}">Configurações</a>
                     </li>
                     <li class="nav-item">
                         <a href="{% url 'logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link" role="button">Deslogar</a>
@@ -47,10 +47,10 @@
                             {% csrf_token %}
                         </form>
                     </li>
-                    
                 </ul>
             </div>
         </nav>
+        
         <!-- Mensagem de Alerta -->
         {% if messages %}
             <div class="row">
@@ -66,11 +66,12 @@
                 </div>
             </div>
         {% endif %}
+
+        <!-- Formulário de Cadastro de Clientes -->
         <div class="container mt-4">
             <div class="row">
                 <div class="col-md-12">
                     <h3 class="mb-4">CADASTRO DE CLIENTE</h3>
-                    <!-- Formulário de Criação de Cliente -->
                     <form id="CriarClienteForm" method="post">
                         {% csrf_token %}
                         <div class="form-row mb-3">
@@ -95,6 +96,56 @@
                                     <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                             </div>
+                                <!-- Campos de Endereço com integração ViaCEP -->
+                            <div class="form-row mb-3">
+                                <div class="col">
+                                    <label for="id_cep">CEP:</label>
+                                    <input type="text" class="form-control {% if form.cep.errors %}is-invalid{% endif %}" id="id_cep" name="cep" value="{{ form.cep.value|default:'' }}" required>
+                                    {% for error in form.cep.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                                <div class="form-row mb-3">
+                                    <!-- Logradouro -->
+                                    <div class="col-9">
+                                        <label for="id_logradouro">Logradouro:</label>
+                                        <input type="text" class="form-control {% if form.logradouro.errors %}is-invalid{% endif %}" id="id_logradouro" name="logradouro" value="{{ form.logradouro.value|default:'' }}" required>
+                                        {% for error in form.logradouro.errors %}
+                                            <div class="invalid-feedback">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                    
+                                    <!-- Número do Logradouro -->
+                                    <div class="col-3">
+                                        <label for="id_numero">Número:</label>
+                                        <input type="text" class="form-control {% if form.numero.errors %}is-invalid{% endif %}" id="id_numero" name="numero" value="{{ form.numero.value|default:'' }}" required>
+                                        {% for error in form.numero.errors %}
+                                            <div class="invalid-feedback">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <label for="id_bairro">Bairro:</label>
+                                    <input type="text" class="form-control {% if form.bairro.errors %}is-invalid{% endif %}" id="id_bairro" name="bairro" value="{{ form.bairro.value|default:'' }}" required>
+                                    {% for error in form.bairro.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                                <div class="col">
+                                    <label for="id_cidade">Cidade:</label>
+                                    <input type="text" class="form-control {% if form.cidade.errors %}is-invalid{% endif %}" id="id_cidade" name="cidade" value="{{ form.cidade.value|default:'' }}" required>
+                                    {% for error in form.cidade.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                                <div class="col">
+                                    <label for="id_estado">Estado:</label>
+                                    <input type="text" class="form-control {% if form.estado.errors %}is-invalid{% endif %}" id="id_estado" name="estado" value="{{ form.estado.value|default:'' }}" required>
+                                    {% for error in form.estado.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
                             <div class="col-12">
                                 <label for="detal_cliente">Informações Adicionais:</label>
                                 <textarea class="form-control {% if form.detal_cliente.errors %}is-invalid{% endif %}" id="detal_cliente" name="detal_cliente" rows="3">{{ form.detal_cliente.value|default:'' }}</textarea>
@@ -103,24 +154,27 @@
                                 {% endfor %}
                             </div>
                         </div>
-                        <!-- Botões Salvar e Voltar -->
+                        <!-- Botões de Ação -->
                         <div class="form-group">
                             <button type="submit" class="btn btn-success">Salvar</button>
-                            <a href="javascript:window.history.back();" class="btn btn-secondary">Voltar</a>
+                            <a href="{% url 'all_clientes' %}" class="btn btn-secondary ml-2">Voltar</a>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+
         <!-- Footer -->
-        <footer class="footer shadow-sm mt-4 fixed-bottom">
+        <footer class="footer shadow-sm mt-4">
             <div class="text-center p-3">
                 <a target="_blank" href="https://github.com/phaleixo/orcamento">PROJETO PI II - UNIVESP - 2024</a>
             </div>
         </footer>
+
         <!-- Importar Bootstrap JavaScript -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="{% static 'scripts/acessibilidade.js' %}"></script>
+        <script src="{% static 'scripts/viacep.js' %}"></script>
     </body>
 </html>

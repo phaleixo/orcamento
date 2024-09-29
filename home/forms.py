@@ -34,12 +34,31 @@ class CadastrarProdutoForm(forms.ModelForm):
 class CriarClienteForm(forms.ModelForm):
     class Meta:
         model = CriarCliente
-        fields = ['nome_cliente', 'cpf_cnpj', 'contato', 'detal_cliente']
+        fields = ['nome_cliente', 'cpf_cnpj', 'contato', 'detal_cliente', 'cep', 'logradouro','numero', 'bairro', 'cidade', 'estado']
+
+    widgets = {
+        'cep': forms.TextInput(attrs={'placeholder': 'CEP'}),
+        'logradouro': forms.TextInput(attrs={'placeholder': 'Logradouro'}),
+        'numero': forms.TextInput(attrs={'placeholder': 'Numero'}),
+        'bairro': forms.TextInput(attrs={'placeholder': 'Bairro'}),
+        'cidade': forms.TextInput(attrs={'placeholder': 'Cidade'}),
+        'estado': forms.TextInput(attrs={'placeholder': 'Estado'}),
+    }
 
 class CadastroEmpresaForm(forms.ModelForm):
     class Meta:
         model = CadastroEmpresa
-        fields = ['nome_empresa','logo', 'cpf_cnpj', 'contato', 'end_empresa',]
+        fields = ['nome_empresa','logo', 'cpf_cnpj', 'contato', 'cep', 'logradouro','numero', 'bairro', 'cidade', 'estado',]
+
+    widgets = {
+        'cep': forms.TextInput(attrs={'placeholder': 'CEP'}),
+        'logradouro': forms.TextInput(attrs={'placeholder': 'Logradouro'}),
+        'numero': forms.TextInput(attrs={'placeholder': 'Numero'}),
+        'bairro': forms.TextInput(attrs={'placeholder': 'Bairro'}),
+        'cidade': forms.TextInput(attrs={'placeholder': 'Cidade'}),
+        'estado': forms.TextInput(attrs={'placeholder': 'Estado'}),
+    }
+
 
 class CustomUserCreationForm(UserCreationForm):
     full_name = forms.CharField(max_length=100, required=True, help_text='Nome completo')

@@ -17,9 +17,9 @@
     <body>
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-            <div class="d-flex align-items-center ml-3  ">
+            <div class="d-flex align-items-center ml-3">
                 <div class="logo mr-2">
-                    <img class= "logo" src="{% static 'image/logo_192_dark.png' %}"/>
+                    <img class="logo" src="{% static 'image/logo_192_dark.png' %}"/>
                 </div>
                 <h1>Orça Facil</h1>
             </div>
@@ -39,7 +39,7 @@
                     </li>
                     
                     <li>
-                        <a class="nav-link" href="{% url 'configuracoes' %}" >Configurações</a>
+                        <a class="nav-link" href="{% url 'configuracoes' %}">Configurações</a>
                     </li>
                     <li class="nav-item">
                         <a href="{% url 'logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link" role="button">Deslogar</a>
@@ -47,13 +47,30 @@
                             {% csrf_token %}
                         </form>
                     </li>
-                    
                 </ul>
             </div>
         </nav>
+
         <div class="container d-flex justify-content-center align-items-center">
             <div class="col-md-12">
                 <h1 class="text-center mb-4 mt-4">Configurações da Empresa</h1>
+                
+                <!-- Exibir mensagens de sucesso ou erro -->
+                {% if messages %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+                
                 {% load crispy_forms_tags %}
                 <form method="post" enctype="multipart/form-data">  <!-- Necessário para upload de arquivos -->
                     {% csrf_token %}
@@ -61,21 +78,25 @@
         
                     <div class="form-group">
                         <button type="submit" class="btn btn-success">Salvar</button>
-                        <a href="javascript:window.history.back();" class="btn btn-secondary">Voltar</a>
+                        <a href="{% url 'gerenciamento' %}" class="btn btn-secondary ml-2">Voltar</a>
+
                     </div>
                 </form>
             </div> 
         </div>
+
         <!-- Footer -->
         <footer class="footer shadow-sm mt-4">
             <div class="text-center p-3">
                 <a target="_blank" href="https://github.com/phaleixo/orcamento">PROJETO PI II - UNIVESP - 2024</a>
             </div>
         </footer>
+        
         <!-- Bootstrap JS e Popper.js -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="{% static 'scripts/acessibilidade.js' %}"></script>
+        <script src="{% static 'scripts/viacep.js' %}"></script>
     </body>
 </html>
