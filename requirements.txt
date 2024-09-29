@@ -1,11 +1,12 @@
-asgiref
+asgiref==3.6.0
 crispy-bootstrap4==2024.1
 Django==4.2.4
 django-crispy-forms==2.1
 djangorestframework==3.14.0
 gunicorn==22.0.0
 packaging==24.0
+pillow==10.4.0
 pytz==2023.3
 sqlparse==0.4.4
-typing-extensions<4,>=3.7.4.3
+typing-extensions==3.10.0.2
 tzdata==2023.3

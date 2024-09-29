@@ -11,7 +11,9 @@
         <header class="px-3 d-flex align-items-center">
             <img src="{{ configuracoes.logo.url }}" alt="Logo da Empresa" width="150" height="150">
             <div class="ml-3">
-                <p>{{ configuracoes.logradouro }} N° {{ configuracoes.numero }}, {{ configuracoes.bairro }} {{ configuracoes.cidade }} - {{ configuracoes.estado }} </p>
+                <h4><strong>{{ configuracoes.nome_empresa }}</strong></h4>
+                <p>{{ configuracoes.logradouro }} N° {{ configuracoes.numero }}, {{ configuracoes.bairro }} Cep: {{ configuracoes.cep }} {{ configuracoes.cidade }} - {{ configuracoes.estado }} </p>
+                <p></p>
                 <p><strong>Telefone:</strong> {{ configuracoes.contato }}</p>
                 
             </div>
