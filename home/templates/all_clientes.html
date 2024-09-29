@@ -103,7 +103,11 @@
     <!-- Botão Voltar -->
     <div class="container mt-4">
         <div class="row">
-            <a href="javascript:window.history.back();" class="btn btn-secondary" style="margin-left: 1rem;">Voltar</a>
+            {% if is_gestor %}
+                <a href="{% url 'gerenciamento' %}" class="btn btn-secondary" style="margin-left: 1rem;">Voltar</a>
+            {% else %}
+                <a href="{% url 'all' %}" class="btn btn-secondary" style="margin-left: 1rem;">Voltar</a>
+            {% endif %}
         </div>
     </div>
     <!-- Footer -->

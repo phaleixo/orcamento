@@ -11,14 +11,16 @@
         <header class="px-3 d-flex align-items-center">
             <img src="{{ configuracoes.logo.url }}" alt="Logo da Empresa" width="150" height="150">
             <div class="ml-3">
-                <p>{{ configuracoes.logradouro }} {{ configuracoes.numero }} {{ configuracoes.bairro }} {{ configuracoes.cidade }} {{ configuracoes.estado }} <strong>Telefone:</strong> {{ configuracoes.contato }}</p>
-                <p id="dataAtual"></p>
+                <p>{{ configuracoes.logradouro }} N° {{ configuracoes.numero }}, {{ configuracoes.bairro }} {{ configuracoes.cidade }} - {{ configuracoes.estado }} </p>
+                <p><strong>Telefone:</strong> {{ configuracoes.contato }}</p>
+                
             </div>
         </header>
         <div>
+            
             <h5 class="text-center py-2">ORÇAMENTO N°: {{ pedido.data|date:"Ydm" }}-{{ pedido.id }}</h5> 
             <h5 class="text-center py-3">Dados do Cliente:</h5>
-            
+            <p id="dataAtual"></p>
         </div>  
         <div>
             <span class="col-3"><strong>NOME:</strong> {{ pedido.nome_cliente|upper }}</span>
