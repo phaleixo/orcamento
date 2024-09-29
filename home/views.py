@@ -371,6 +371,15 @@ def all_vendedores(request):
     }
     return render (request, 'all_vendedores.html', context)
 
+# Exibir Dados da Empresa
+@login_required
+def all_empresa(request):
+    empresa = CadastroEmpresa.objects.first()
+    context = {
+        'empresa': empresa,
+    }
+    return render (request, 'all_empresa.html', context)
+
 # Configurações da empresa
 @login_required
 def configuracoes(request):
