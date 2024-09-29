@@ -4,6 +4,13 @@ body {
 
 }
 
+html, body {
+    height: 100%;
+}
+.content {
+    min-height: calc(100vh - 100px); /* Ajuste o valor de 56px se necessário */
+}
+
 .titulo {
     font-family: 'Anek Latin', sans-serif;
     font-size: 52px;

@@ -154,6 +154,7 @@ def criar_pedido(request):
 
     # Criar o contexto com o formulário e a data atual
     context = {
+        'cpfs_cnpjs' : cpfs_cnpjs,
         'form': form,
         'data_atual': data_atual,
         'produtos' : produtos
@@ -374,11 +375,18 @@ def all_vendedores(request):
 # Exibir Dados da Empresa
 @login_required
 def all_empresa(request):
-    empresa = CadastroEmpresa.objects.first()
-    context = {
-        'empresa': empresa,
-    }
-    return render (request, 'all_empresa.html', context)
+    if not is_in_group_gestores(request.user):
+        messages.error(request, 'Você não tem permissão para acessar esta página.')
+        referer = request.META.get('HTTP_REFERER')
+        if referer:
+            return redirect(referer)
+        
+    else:
+        empresa = CadastroEmpresa.objects.first()
+        context = {
+            'empresa': empresa,
+        }
+        return render(request, 'all_empresa.html', context)
 
 # Configurações da empresa
 @login_required

@@ -39,7 +39,7 @@
                     </li>
                     
                     <li>
-                        <a class="nav-link" href="{% url 'configuracoes' %}" >Configurações</a>
+                        <a class="nav-link" href="{% url 'all_empresa' %}" >Configurações</a>
                     </li>
                     <li class="nav-item">
                         <a href="{% url 'logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link" role="button">Deslogar</a>
@@ -53,7 +53,7 @@
         </nav>
         <div class="container d-flex justify-content-center align-items-center">
             <div class="col-md-6">
-                <h1 class="text-center mb-4 mt-4">Editar Produto</h1>
+                <h1 class="text-center mb-4 mt-4">Editar Cliente</h1>
 
                 <!-- Formulário de Edição -->
                 <form method="post" class=" p-2 border rounded">
@@ -70,7 +70,7 @@
             </div>
         </div>
         <!-- Footer -->
-        <footer class="footer shadow-sm mt-4 fixed-bottom">
+        <footer class="footer shadow-sm mt-4">
             <div class="text-center p-3">
                 <a target="_blank" href="https://github.com/phaleixo/orcamento">PROJETO PI II - UNIVESP - 2024</a>
             </div>
@@ -80,5 +80,6 @@
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="{% static 'scripts/acessibilidade.js' %}"></script>
+        <script src="{% static 'scripts/viacep.js' %}"></script>
     </body>
 </html>

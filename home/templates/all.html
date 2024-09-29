@@ -17,7 +17,6 @@
     </head>
     <body>
         <!-- Navbar -->
-        <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
             <div class="d-flex align-items-center ml-3  ">
                 <div class="logo mr-2">
@@ -41,7 +40,7 @@
                     </li>
                     
                     <li>
-                        <a class="nav-link" href="{% url 'configuracoes' %}" >Configurações</a>
+                        <a class="nav-link" href="{% url 'all_empresa' %}" >Configurações</a>
                     </li>
                     <li class="nav-item">
                         <a href="{% url 'logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link" role="button">Deslogar</a>
@@ -97,7 +96,7 @@
             </div>
         </div>
         <!-- Footer -->
-        <footer class="footer shadow-sm mt-4 fixed-bottom">
+        <footer class="footer shadow-sm">
             <div class="text-center p-3">
                 <a target="_blank" href="https://github.com/phaleixo/orcamento">PROJETO PI II - UNIVESP - 2024</a>
             </div>

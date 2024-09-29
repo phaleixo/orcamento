@@ -39,7 +39,7 @@
                 </li>
                 
                 <li>
-                    <a class="nav-link" href="{% url 'configuracoes' %}" >Configurações</a>
+                    <a class="nav-link" href="{% url 'all_empresa' %}" >Configurações</a>
                 </li>
                 <li class="nav-item">
                     <a href="{% url 'logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link" role="button">Deslogar</a>
@@ -51,6 +51,13 @@
             </ul>
         </div>
     </nav>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
     <div class="container text-center">
         <h2 class="mt-4 mb-4">Dados da Empresa</h2>
         <img src="{{ empresa.logo.url }}" alt="Logo da Empresa" width="150" height="150" class="mb-3">

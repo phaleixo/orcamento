@@ -39,7 +39,7 @@
                 </li>
                 
                 <li>
-                    <a class="nav-link" href="{% url 'configuracoes' %}" >Configurações</a>
+                    <a class="nav-link" href="{% url 'all_empresa' %}" >Configurações</a>
                 </li>
                 <li class="nav-item">
                     <a href="{% url 'logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link" role="button">Deslogar</a>
@@ -98,7 +98,7 @@
     <!-- Botão Voltar -->
     <div class="container mt-4">
         <div class="row">
-            <a href={% url 'gerenciamento' %} class="btn btn-secondary" style="margin-left: 1rem;">Voltar</a>
+            <a href="javascript:window.history.back();" class="btn btn-secondary" style="margin-left: 1rem;">Voltar</a>
         </div>
     </div>
     <!-- Footer -->
