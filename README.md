@@ -1,4 +1,4 @@
-Projeto PI 1 da turma 002 Cravinhos 2024
+Projeto PI da turma 002 Cravinhos 2024
 
 Aplicativo simples para Orçamento feito com Python 3.10.14
 
