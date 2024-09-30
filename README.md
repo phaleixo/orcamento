@@ -22,6 +22,7 @@ Requerimentos que serão instalados pelo requeriments.txt:
 ``sqlparse==0.4.4``
 ``typing_extensions==4.11.0``
 ``tzdata==2023.3``
+``pillow``
 
 
 Para adaptar o aplicativo a suas necessidades:
@@ -34,8 +35,9 @@ git clone https://github.com/phaleixo/orcamento
 ```
 3 - Navegue até a pasta:
 ```
-cd orcamento ( se tiver um arquivo chamado 'sqlite',que é o banco de dados, apague ele. Logo vamos criar outro :)
+cd orcamento 
 ```
+( se tiver um arquivo chamado 'sqlite',que é o banco de dados, apague ele. Logo vamos criar outro :)
 4 - Crie o ambiente virtual:
 ```
 python -m venv .venv
