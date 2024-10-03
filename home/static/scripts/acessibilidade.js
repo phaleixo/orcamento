@@ -19,3 +19,7 @@ decreaseFontBtn.addEventListener('click', () => {
     }
 });
 
+/*Dark Mode*/
+document.getElementById('invertColors').addEventListener('click', function() {
+    document.body.classList.toggle('inverted-colors');
+  });
