@@ -8,7 +8,7 @@ html, body {
     height: 100%;
 }
 .content {
-    min-height: calc(100vh - 100px); /* Ajuste o valor de 56px se necessário */
+    min-height: calc(100vh - 100px);
 }
 
 .titulo {
@@ -20,7 +20,8 @@ html, body {
     width: 60px;
 }
 .navbar, .cordefundologin {
-    color: #202020;        
+    color: #202020;
+           
 }
    
 /* Classe para inverter cores para acessibilidade */
