@@ -27,6 +27,9 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>  
             </button>
+            <div class="collapse navbar-collapse justify-content-start" id="navbarNav">
+                <button class="toggle-btn" id="toggleSidebar"><i class="fa-solid fa-bars"></i></button>
+            </div>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
@@ -41,19 +44,30 @@
                         <a class="nav-link" href="#">Bem Vindo, {{ user.get_username }} <span class="sr-only">(current)</span></a>
                     </li>
                     
-                    <li>
-                        <a class="nav-link" href="{% url 'all_empresa' %}" >Configurações</a>
-                    </li>
                     <li class="nav-item">
-                        <a href="{% url 'logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link" role="button">Deslogar</a>
+                        <a href="{% url 'logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link" role="button"><i class="fa-solid fa-right-from-bracket"></i>Sair</a>
                         <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
                             {% csrf_token %}
                         </form>
                     </li>
-                    
                 </ul>
             </div>
         </nav>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <ul>
+            <li><a class="nav-link" href="{% url 'cadastrar_clientes' %}"><i class="fa-solid fa-user"></i>Cadastrar Clientes</a></li>
+            <li><a class="nav-link" href="{% url 'cadastrar_empresa' %}"><i class="fa-solid fa-paste"></i>Cadastrar Empresas</a></li>
+            <li><a class="nav-link" href="{% url 'cadastrar_produtos' %}"><i class="fa-solid fa-cubes"></i>Cadastrar Produtos</a></li>
+            <li><a class="nav-link" href="{% url 'cadastrar_vendedores' %}"><i class="fa-solid fa-pen-to-square"></i>Cadastrar Vendedores</a></li>       
+            <hr>
+            <li><a class="nav-link" href="{% url 'gerenciamento' %}"><i class="fa-solid fa-square-poll-horizontal"></i>Gerenciamento</a></li>
+            <li><a class="nav-link" href="{% url 'all_empresa' %}"><i class="fa-solid fa-gear"></i>Configurações</a></li>
+        </ul>
+    </div>
+    
+        <!-- Backdrop para fechar sidebar -->
+        <div class="backdrop" id="backdrop"></div>
         <!-- Mensagens de Erro/Sucesso -->
         {% if messages %}
             <div class="container mt-4">
@@ -118,5 +132,6 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="{% static 'scripts/acessibilidade.js' %}"></script>
+        <script src="{% static 'scripts/sidebar.js' %}"></script>
     </body>
 </html>
