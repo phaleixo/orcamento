@@ -1,6 +1,8 @@
 body {
     display: flex;
     flex-direction: column;
+    background-color: #f0f1f3;
+    min-height: 100vh;
 
 }
 
@@ -9,6 +11,11 @@ html, body {
 }
 .content {
     min-height: calc(100vh - 100px);
+}
+
+.container {
+    flex: 1 0 auto;
+    padding-bottom: 2rem; /* Espaço para o footer não sobrepor o conteúdo */
 }
 
 .titulo {
@@ -31,4 +38,44 @@ html, body {
   }
 
 
+/* Cores para os cards do dashboard */
+.border-left-primary {
+    border-left: 0.25rem solid #4e73df !important;
+}
 
+.border-left-success {
+    border-left: 0.25rem solid #1cc88a !important;
+}
+
+.border-left-info {
+    border-left: 0.25rem solid #36b9cc !important;
+}
+
+.border-left-warning {
+    border-left: 0.25rem solid #f6c23e !important;
+}
+
+.text-xs {
+    font-size: 0.7rem;
+}
+
+.text-gray-300 {
+    color: #dddfeb !important;
+}
+
+.text-gray-800 {
+    color: #5a5c69 !important;
+}
+
+
+/* Ajuste para garantir que cards e outros elementos mantenham sua cor de fundo */
+.card {
+    background-color: white;
+}
+
+/* Ajuste opcional para o rodapé */
+.footer {
+    margin-top: auto;
+    flex-shrink: 0;
+    width: 100%;
+} 

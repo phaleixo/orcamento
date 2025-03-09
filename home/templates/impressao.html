@@ -4,71 +4,122 @@
     <head>
         <meta charset="UTF-8">
         <title>Pedido {{ pedido.id }}</title>
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">   
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <link href="{% static 'style/impressao.css' %}" rel="stylesheet">
     </head>
     
-    <body class="p-3">
-        <header class="px-3 d-flex align-items-center">
-            <img src="{{ configuracoes.logo.url }}" alt="Logo da Empresa" width="150" height="150">
-            <div class="ml-3">
-                <h4><strong>{{ configuracoes.nome_empresa }}</strong></h4>
-                <p>{{ configuracoes.logradouro }} N° {{ configuracoes.numero }}, {{ configuracoes.bairro }} Cep: {{ configuracoes.cep }} {{ configuracoes.cidade }} - {{ configuracoes.estado }} </p>
-                <p></p>
-                <p><strong>Telefone:</strong> {{ configuracoes.contato }}</p>
-                
+    <body class="p-4">
+        <!-- Cabeçalho com logo e dados da empresa -->
+        <header class="document-header d-flex align-items-center">
+            <div class="logo-container mr-4">
+                <img src="{{ configuracoes.logo.url }}" alt="Logo da Empresa" width="150" height="150" class="img-fluid">
+            </div>
+            <div class="empresa-info">
+                <h3 class="mb-2"><strong>{{ configuracoes.nome_empresa }}</strong></h3>
+                <p class="mb-1">{{ configuracoes.logradouro }}, N° {{ configuracoes.numero }}</p>
+                <p class="mb-1">{{ configuracoes.bairro }}, {{ configuracoes.cidade }} - {{ configuracoes.estado }}</p>
+                <p class="mb-1">CEP: {{ configuracoes.cep }}</p>
+                <p class="mb-0"><strong>Telefone:</strong> {{ configuracoes.contato }}</p>
             </div>
         </header>
-        <div>
-            
-            <h5 class="text-center py-2">ORÇAMENTO N°: {{ pedido.data|date:"Ydm" }}-{{ pedido.id }}</h5> 
-            <h5 class="text-center py-3">Dados do Cliente:</h5>
-            <p id="dataAtual"></p>
-        </div>  
-        <div>
-            <span class="col-3"><strong>NOME:</strong> {{ pedido.nome_cliente|upper }}</span>
-            <span class="col-3"><strong>CPF/CNPJ:</strong> {{ pedido.cpf_cnpj }}</span>
-            <span class="col-3"><strong>TELEFONE:</strong> {{ pedido.contato }}</span>
-            <span class="col-3"><strong>DATA DO PEDIDO:</strong> {{ pedido.data|date:"d/m/Y" }}</span>
+
+        <!-- Número do orçamento -->
+        <div class="orcamento-numero text-center">
+            <h4 class="mb-0">ORÇAMENTO N°: {{ pedido.data|date:"Ydm" }}-{{ pedido.id }}</h4>
+        </div>
+
+        <!-- Data atual (javascript) -->
+        <div class="text-right mb-3">
+            <p id="dataAtual" class="mb-0"></p>
+        </div>
+
+        <!-- Dados do cliente -->
+        <div class="cliente-info mb-4">
+            <h5 class="text-center mb-3">Dados do Cliente</h5>
+            <div class="row">
+                <div class="col-md-6 mb-2">
+                    <strong>NOME:</strong> {{ pedido.nome_cliente|upper }}
+                </div>
+                <div class="col-md-6 mb-2">
+                    <strong>CPF/CNPJ:</strong> {{ pedido.cpf_cnpj }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-2">
+                    <strong>TELEFONE:</strong> {{ pedido.contato }}
+                </div>
+                <div class="col-md-6 mb-2">
+                    <strong>DATA DO PEDIDO:</strong> {{ pedido.data|date:"d/m/Y" }}
+                </div>
+            </div>
         </div>
         
-        <table class="table table-bordered px-3">
-            <thead>
-                <tr>
-                    <th class="text-center table-active">Quant.</th>
-                    <th class="text-center table-active">Produtos</th>
-                    <th class="text-center table-active">Descrição Impresso</th>
-                    <th class="text-center table-active">Valor Unitário</th>
-                    <th class="text-center table-active">Valor Subtotal</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="text-center">{{ pedido.quantidade }}</td>
-                    <td class="text-center">{{ pedido.produto }}</td>
-                    <td class="text-center">{{ pedido.descricao_impresso }}</td>
-                    <td class="text-center">R$ {{ pedido.valor_unitario }}</td>
-                    <td class="text-center">R$ {{ pedido.valor_total }}</td>
-                </tr>
-                <tr class="table table-bordered">
-                    <th class="text-center table-active" colspan="5">Descrição do Pedido</th>
-                </tr>
-                <tr>
-                    <td class="multiline" colspan="5" rowspan="3">{{ pedido.descricao_pedido }}</td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th class="text-right" colspan="4">Total:</th>
-                    <th class="text-center">R$ {{ pedido.valor_total }}</th>
-                </tr>
-            </tfoot>
-        </table>
-        <div class="float-right d-print-none">
-            <button type="button" class="btn btn-success" onclick="window.print()">Imprimir / Salvar PDF</button>
+        <!-- Tabela de produtos -->
+        <div class="table-responsive mb-4">
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="text-center" width="10%">Quant.</th>
+                        <th class="text-center" width="45%">Produtos</th>
+                        <th class="text-center" width="20%">Valor Unitário</th>
+                        <th class="text-center" width="25%">Valor Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if pedido.itens.all %}
+                        {% for item in pedido.itens.all %}
+                        <tr>
+                            <td class="text-center">{{ item.quantidade }}</td>
+                            <td>{{ item.produto.produto }}</td>
+                            <td class="text-right">R$ {{ item.valor_unitario }}</td>
+                            <td class="text-right">R$ {{ item.subtotal }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <!-- Manter compatibilidade com pedidos antigos -->
+                        <tr>
+                            <td class="text-center">{{ pedido.quantidade }}</td>
+                            <td>{{ pedido.produto }}</td>
+                            <td class="text-right">R$ {{ pedido.valor_unitario }}</td>
+                            <td class="text-right">R$ {{ pedido.valor_total }}</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th class="text-right" colspan="3">Total:</th>
+                        <th class="text-right valor-total">R$ {{ pedido.valor_total }}</th>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
-        <!-- Importar Bootstrap JavaScript -->
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <!-- Descrição do Impresso -->
+        <div class="mb-4">
+            <h5 class="bg-secondary text-white p-2">Descrição do Impresso</h5>
+            <div class="descricao-box border">
+                {{ pedido.descricao_impresso|linebreaks }}
+            </div>
+        </div>
+
+        <!-- Descrição do Pedido -->
+        <div class="mb-4">
+            <h5 class="bg-secondary text-white p-2">Descrição do Pedido</h5>
+            <div class="descricao-box border">
+                {{ pedido.descricao_pedido|linebreaks }}
+            </div>
+        </div>
+
+        <!-- Botão de impressão -->
+        <div class="text-right mt-4 mb-4 d-print-none">
+            <button type="button" class="btn btn-lg btn-success" onclick="window.print()">
+                <i class="fas fa-print"></i> Imprimir / Salvar PDF
+            </button>
+        </div>
+
+        <!-- Scripts -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="{% static 'scripts/impressao.js' %}"></script>
         <script src="{% static 'scripts/acessibilidade.js' %}"></script>
     </body> 

@@ -31,27 +31,41 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <!-- Botões para ajustar o tamanho da fonte e Dak mode-->
+                        <!-- Botões para ajustar o tamanho da fonte e Dark mode-->
                         <div class="text-right mr-3 mt-1">
-                            <button class="btn btn-light" id="decreaseFont">A-</button>
-                            <button class="btn btn-light" id="increaseFont">A+</button>
-                            <i class="fa-solid fa-circle-half-stroke" id="invertColors" ></i>
+                            <button class="btn btn-sm btn-outline-secondary rounded-pill" id="decreaseFont">
+                                <i class="fas fa-font"></i> -
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary rounded-pill" id="increaseFont">
+                                <i class="fas fa-font"></i> +
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary rounded-pill" id="invertColors">
+                                <i class="fa-solid fa-circle-half-stroke"></i>
+                            </button>
                         </div>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Bem Vindo, {{ user.get_username }} <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-user-circle mr-1"></i>
+                            Bem Vindo, {{ user.get_username }}
+                        </a>
                     </li>
                     
-                    <li>
-                        <a class="nav-link" href="{% url 'all_empresa' %}" >Configurações</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'all_empresa' %}">
+                            <i class="fas fa-cogs mr-1"></i>
+                            Configurações
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url 'logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link" role="button">Deslogar</a>
+                        <a href="{% url 'logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link" role="button">
+                            <i class="fas fa-sign-out-alt mr-1"></i>
+                            Deslogar
+                        </a>
                         <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
                             {% csrf_token %}
                         </form>
                     </li>
-                    
                 </ul>
             </div>
         </nav>
@@ -69,52 +83,74 @@
                     {% endfor %}
                 {% endif %}
             </div>
-            <h2 class="mb-4">Gerenciar Produtos</h2>
-            <div class="d-flex justify-content-center p-2">
-                <a href="{% url 'cadastrar_produtos' %}" class="btn btn-primary mx-2" role="button">Cadastrar Produtos</a>
-            </div>
-            <div class="table-responsive p-2">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Cod. do Produto</th>
-                            <th>Produto</th>
-                            <th>Valor Produto</th>
-                            <th>Descricao</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for produto in produto %}
-                        <tr>
-                            <td>{{ produto.cod_produto }}</td>
-                            <td>{{ produto.produto }}</td>
-                            <td>{{ produto.valorproduto }}</td>
-                            <td>{{ produto.descricao_produto }}</td>
-                            <td>
-                                <a href="{% url 'excluir_produto' produto.id %}" class="btn btn-danger btn-sm" style="width: 60px; margin-bottom: 5px;">Excluir</a>
-                                <a href="{% url 'editar_produto' produto.id %}" class="btn btn-warning btn-sm" style="width: 60px; margin-bottom: 5px;">Editar</a>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="5">Nenhum produto encontrado.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h3 class="mb-0">
+                        <i class="fas fa-box-open text-secondary mr-2"></i>
+                        Gerenciar Produtos
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-end mb-3">
+                        <a href="{% url 'cadastrar_produtos' %}" class="btn btn-success" role="button">
+                            <i class="fas fa-plus-circle mr-1"></i>
+                            Cadastrar Produtos
+                        </a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th><i class="fas fa-hashtag mr-1"></i> Cod. do Produto</th>
+                                    <th><i class="fas fa-tag mr-1"></i> Produto</th>
+                                    <th><i class="fas fa-dollar-sign mr-1"></i> Valor Produto</th>
+                                    <th><i class="fas fa-info-circle mr-1"></i> Descrição</th>
+                                    <th><i class="fas fa-tools mr-1"></i> Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for produto in produto %}
+                                <tr>
+                                    <td>{{ produto.cod_produto }}</td>
+                                    <td>{{ produto.produto }}</td>
+                                    <td>{{ produto.valorproduto }}</td>
+                                    <td>{{ produto.descricao_produto }}</td>
+                                    <td>
+                                        <a href="{% url 'excluir_produto' produto.id %}" class="btn btn-outline-danger btn-sm mb-1">
+                                            <i class="fas fa-trash mr-1"></i> Excluir
+                                        </a>
+                                        <a href="{% url 'editar_produto' produto.id %}" class="btn btn-outline-warning btn-sm">
+                                            <i class="fas fa-edit mr-1"></i> Editar
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center">Nenhum produto encontrado.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Botão Voltar -->
+                    <div class="mt-3">
+                        <a href="{% url 'gerenciamento' %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left mr-1"></i> Voltar
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- Botão Voltar -->
-        <div class="container mt-4">
-            <div class="row">
-                <a href={% url 'gerenciamento' %} class="btn btn-secondary" style="margin-left: 1rem;">Voltar</a>
-            </div>
-        </div>
+        
         <!-- Footer -->
-        <footer class="footer shadow-sm mt-4 fixed-bottom">
+        <footer class="footer shadow-sm mt-4">
             <div class="text-center p-3">
-                <a target="_blank" href="https://github.com/phaleixo/orcamento">PROJETO PI II - UNIVESP - 2024</a>
+                <a target="_blank" href="https://github.com/phaleixo/orcamento">
+                    <i class="fab fa-github mr-2"></i>
+                    PROJETO PI II - UNIVESP - 2024
+                </a>
             </div>
         </footer>
         <!-- Adicionando Bootstrap JS -->

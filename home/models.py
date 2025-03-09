@@ -9,18 +9,34 @@ class Pedido(models.Model):
     nome_cliente = models.CharField(max_length=100)
     contato = models.CharField(max_length=11)
     cpf_cnpj = models.CharField(max_length=14)
-    produto = models.CharField(max_length=100)
-    quantidade = models.IntegerField()
-    valor_unitario = models.DecimalField(max_digits=10, decimal_places=2)     
     descricao_pedido = models.TextField()
     descricao_impresso = models.TextField()
     valor_total = models.DecimalField(max_digits=10, decimal_places=2)
+    
+    # Campos legados - mantemos para compatibilidade com código existente
+    produto = models.CharField(max_length=100, null=True, blank=True)
+    quantidade = models.IntegerField(null=True, blank=True)
+    valor_unitario = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     
     def __str__(self):
         return f"Pedido de {self.nome_cliente} em {self.data}"
 
     class Meta:
-        ordering = ['-id']  # Ordenar por data_pedido em ordem decrescente    
+        ordering = ['-id']  # Ordenar por id em ordem decrescente
+
+
+class ItemPedido(models.Model):
+    pedido = models.ForeignKey(Pedido, related_name='itens', on_delete=models.CASCADE)
+    produto = models.ForeignKey('CadastrarProduto', on_delete=models.CASCADE)
+    quantidade = models.IntegerField()
+    valor_unitario = models.DecimalField(max_digits=10, decimal_places=2)
+    
+    @property
+    def subtotal(self):
+        return self.quantidade * self.valor_unitario
+    
+    def __str__(self):
+        return f"{self.quantidade} x {self.produto.produto}"
 
 
 class CadastrarProduto(models.Model):

@@ -4,7 +4,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required,  user_passes_test
 from django.contrib.auth import logout
 from django.views.decorators.http import require_POST
-from .models import CadastroEmpresa, Pedido, CadastrarProduto,CriarCliente
+from .models import CadastroEmpresa, Pedido, CadastrarProduto,CriarCliente, ItemPedido
 from .forms import EditarVendedorForm, PedidoForm
 from datetime import date
 from datetime import datetime
@@ -19,6 +19,10 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from .forms import EditarProdutoForm
 from django.contrib.auth.models import Group
+from django.db import models
+from django.db.models import Sum, Count, F, DecimalField
+from django.db.models.expressions import ExpressionWrapper
+
 
 # Função para buscar cliente e exibir em all_clientes.html
 def buscar_cliente(request):
@@ -54,10 +58,12 @@ def all(request):
     dia = str(now.day).zfill(2)
     data_atual = ano + mes + dia
 
+    # Para cada pedido, verificar se tem itens associados e garantir que o texto esteja em maiúsculas
     for pedido in pedidos:
         pedido.nome_cliente = pedido.nome_cliente.upper() if pedido.nome_cliente else ''
         pedido.cpf_cnpj = pedido.cpf_cnpj.upper() if pedido.cpf_cnpj else ''
-        
+        # Prefetch dos itens relacionados
+        pedido.itens_lista = pedido.itens.all()
 
     context = {
         'data_atual': data_atual,
@@ -80,20 +86,100 @@ def is_in_group_gestores(user):
 @login_required
 @user_passes_test(is_in_group_gestores)
 def gerenciamento(request):
+    # Período para filtrar os dados
+    periodo = request.GET.get('periodo', 'semana')
+    
+    now = timezone.now().date()
+    if periodo == 'semana':
+        data_inicio = now - timezone.timedelta(days=7)
+    elif periodo == 'mes':
+        data_inicio = now.replace(day=1)
+    elif periodo == 'ano':
+        data_inicio = now.replace(month=1, day=1)
+    else:
+        data_inicio = now - timezone.timedelta(days=7)  # Default: última semana
+    
+    # Obter todos os pedidos para exibição na tabela principal
     pedidos = Pedido.objects.all()
-    now = datetime.now()
-    ano = str(now.year).zfill(4) 
-    mes = str(now.month).zfill(2) 
-    dia = str(now.day).zfill(2)
-    data_atual = ano + mes + dia
+    
+    # Estatísticas para o dashboard
+    total_clientes = CriarCliente.objects.count()
+    novos_clientes = CriarCliente.objects.filter(id__gte=0).count()  # Placeholder, ajuste conforme necessário
+    
+    total_pedidos = Pedido.objects.filter(data__gte=data_inicio).count()
+    
+    # Calcular valor total dos pedidos
+    valor_total_query = Pedido.objects.filter(data__gte=data_inicio).aggregate(
+        total=Sum('valor_total')
+    )
+    valor_total_pedidos = valor_total_query['total'] if valor_total_query['total'] else 0
+    
+    total_produtos = CadastrarProduto.objects.count()
+    
+    # Estatísticas por vendedor
+    vendedores_pedidos = Pedido.objects.filter(data__gte=data_inicio).values(
+        'vendedor__username'
+    ).annotate(
+        name=F('vendedor__username'),
+        count=Count('id'),
+        total=Sum('valor_total')
+    ).order_by('-count')
+    
+    # Abordagem alternativa para top produtos que evita o erro de multiplicação
+    # Primeiro obtenha os produtos mais vendidos por quantidade
+    top_produtos_ids = ItemPedido.objects.filter(
+        pedido__data__gte=data_inicio
+    ).values('produto').annotate(
+        quantidade=Sum('quantidade')
+    ).order_by('-quantidade')[:5]
+    
+    # Depois calcule os valores totais separadamente
+    top_produtos = []
+    for item in top_produtos_ids:
+        produto_id = item['produto']
+        qtd = item['quantidade']
+        
+        try:
+            produto_obj = CadastrarProduto.objects.get(id=produto_id)
+            
+            # Calcular o valor total para este produto
+            itens_produto = ItemPedido.objects.filter(
+                produto_id=produto_id,
+                pedido__data__gte=data_inicio
+            )
+            
+            # Calcular manualmente a soma do subtotal
+            total_valor = sum(item.quantidade * item.valor_unitario for item in itens_produto)
+            
+            top_produtos.append({
+                'nome': produto_obj.produto,
+                'quantidade': qtd,
+                'total': total_valor
+            })
+        except CadastrarProduto.DoesNotExist:
+            # Caso o produto não exista mais, ignorar
+            continue
+    
+    # Formatando dados para o template
     for pedido in pedidos:
         pedido.nome_cliente = pedido.nome_cliente.upper() if pedido.nome_cliente else ''
         pedido.cpf_cnpj = pedido.cpf_cnpj.upper() if pedido.cpf_cnpj else ''
+        pedido.itens_lista = pedido.itens.all()
     
     context = {
-        'data_atual': data_atual,
-        'pedidos': pedidos
+        'data_atual': f"{now.year}{now.month:02d}{now.day:02d}",
+        'pedidos': pedidos,
+        # Dashboard data
+        'total_clientes': total_clientes,
+        'novos_clientes': novos_clientes,
+        'total_pedidos': total_pedidos,
+        'valor_total_pedidos': valor_total_pedidos,
+        'total_produtos': total_produtos,
+        'vendedores_pedidos': vendedores_pedidos,
+        'top_produtos': top_produtos,
+        'periodo': periodo
     }
+    
     return render(request, 'gerenciamento.html', context)
 
 def login(request):
@@ -122,43 +208,93 @@ def criar_pedido(request):
     produtos = CadastrarProduto.objects.all()
 
     if request.method == 'POST':
-        form = PedidoForm(request.POST)
-        if form.is_valid():
-            # Processar a data do formulário e atribuir ao campo data_pedido
-            data_str = request.POST.get('data', None)  # Obter a data do formulário
-            if data_str:
+        # Obter dados básicos do pedido
+        nome_cliente = request.POST.get('nome_cliente')
+        contato = request.POST.get('contato')
+        cpf_cnpj = request.POST.get('cpf_cnpj')
+        descricao_pedido = request.POST.get('descricao_pedido')
+        descricao_impresso = request.POST.get('descricao_impresso')
+        valor_total = request.POST.get('valor_total')
+        
+        # Processar a data do pedido
+        data_str = request.POST.get('data', None)
+        if data_str:
+            try:
+                data = date.fromisoformat(data_str)
+            except ValueError:
+                data = datetime.now().date()
+        else:
+            data = datetime.now().date()
+        
+        # Obter produtos, quantidades e valores unitários
+        produtos_ids = request.POST.getlist('produtos[]')
+        quantidades = request.POST.getlist('quantidades[]')
+        valores_unitarios = request.POST.getlist('valores_unitarios[]')
+        
+        # Para compatibilidade com código existente, também pegamos os valores antigos
+        produto_principal = request.POST.get('produto', None)
+        quantidade_principal = request.POST.get('quantidade', None)
+        valor_unitario_principal = request.POST.get('valor_unitario', None)
+        
+        # Verificar se temos pelo menos um produto válido
+        if not produtos_ids:
+            messages.error(request, 'É necessário adicionar pelo menos um produto ao pedido.')
+            return render(request, 'criar_pedido.html', {
+                'cpfs_cnpjs': cpfs_cnpjs,
+                'data_atual': data_atual,
+                'produtos': produtos
+            })
+        
+        # Converter valor_total para decimal
+        try:
+            valor_total_decimal = Decimal(valor_total)
+        except (InvalidOperation, TypeError):
+            valor_total_decimal = Decimal('0.00')
+        
+        # Criar o pedido
+        pedido = Pedido.objects.create(
+            vendedor=request.user,
+            data=data,
+            nome_cliente=nome_cliente,
+            contato=contato,
+            cpf_cnpj=cpf_cnpj,
+            descricao_pedido=descricao_pedido,
+            descricao_impresso=descricao_impresso,
+            valor_total=valor_total_decimal,
+            # Campos legados
+            produto=produto_principal,
+            quantidade=quantidade_principal,
+            valor_unitario=valor_unitario_principal
+        )
+        
+        # Salvar os itens do pedido
+        for i in range(len(produtos_ids)):
+            if i < len(quantidades) and i < len(valores_unitarios) and produtos_ids[i]:
                 try:
-                    data = date.fromisoformat(data_str)
-                    form.instance.data_pedido = data  # Atribuir data ao campo data_pedido
-                except ValueError:
-                    # Lidar com erro de formatação de data, se necessário
-                    pass
-
-            # Processar o valor_unitario do formulário e atribuir ao campo valor_unitario
-            valor_str = form.cleaned_data['valor_unitario']
-            if valor_str:
-                try:
-                    valor = parse_decimal_br(valor_str)  # Função para converter valor monetário brasileiro em Decimal
-                    form.instance.valor_unitario = valor  # Atribuir valor_unitario ao campo valor_unitario
-                except ValueError:
-                    # Lidar com erro de conversão de valor
-                    pass
-            # Atribuir o usuário logado ao pedido
-            form.instance.vendedor = request.user  
-            form.save()
-            return redirect('all')  # Redirecionar para página de sucesso após salvar
+                    produto = CadastrarProduto.objects.get(id=produtos_ids[i])
+                    quantidade = int(quantidades[i])
+                    valor_unitario = Decimal(valores_unitarios[i])
+                    
+                    ItemPedido.objects.create(
+                        pedido=pedido,
+                        produto=produto,
+                        quantidade=quantidade,
+                        valor_unitario=valor_unitario
+                    )
+                except (CadastrarProduto.DoesNotExist, ValueError, InvalidOperation):
+                    # Registrar erro e continuar com os próximos itens
+                    continue
+        
+        return redirect('all')
         
     else:
         produtos = CadastrarProduto.objects.all()
-        form = PedidoForm()
 
     # Criar o contexto com o formulário e a data atual
     context = {
         'cpfs_cnpjs' : cpfs_cnpjs,
-        'form': form,
         'data_atual': data_atual,
         'produtos' : produtos
-        
     }
 
     return render(request, 'criar_pedido.html', context)
@@ -194,9 +330,14 @@ def excluir_pedido(request, pedido_id):
 def imprimir_pedido(request, pedido_id):    
     pedido = Pedido.objects.get(pk=pedido_id)
     configuracoes = CadastroEmpresa.objects.first()
+    
+    # Obter itens do pedido (se houver)
+    itens_pedido = pedido.itens.all()
+    
     context = {
         'pedido': pedido,
-        'configuracoes': configuracoes
+        'configuracoes': configuracoes,
+        'itens_pedido': itens_pedido
     }
     return render(request, 'impressao.html', context)# Redirecionar para a página de impressão
 
