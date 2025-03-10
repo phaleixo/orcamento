@@ -1,28 +1,56 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="pt-BR">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Confirmação de Produto</title>
-        <!-- Importar Bootstrap CSS -->
+        <title>Confirmar Exclusão de Produto - Orça Facil</title>
+        <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <!-- FontAwesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <!-- Css -->
+        <link rel="stylesheet" href="{% static 'style/style.css' %}">
+        <link rel="stylesheet" href="{% static 'style/moderna.css' %}">
+        <!-- Fontes -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Anek+Latin:wdth,wght@87.5,100..800&display=swap" rel="stylesheet">
     </head>
-    <body class="d-flex justify-content-center align-items-center" style="height: 100vh;">
-            <!-- Botões para ajustar o tamanho da fonte -->
-        <div class="text-right p-3">
-            <button class="btn btn-light" id="increaseFont">A+</button>
-            <button class="btn btn-light" id="decreaseFont">A-</button>
+    <body class="d-flex justify-content-center align-items-center" style="min-height: 100vh; background-color: var(--background-light);">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card shadow-lg border-0">
+                        <div class="card-header text-center">
+                            <h3 class="mb-0">
+                                <i class="fas fa-exclamation-triangle text-danger mr-2"></i>
+                                Confirmação de Exclusão
+                            </h3>
+                        </div>
+                        <div class="card-body text-center">
+                            <p class="lead mb-4">Você tem certeza que deseja excluir o produto?</p>
+                            <div class="alert alert-danger mb-4">
+                                <i class="fas fa-exclamation-circle mr-2"></i>
+                                <strong>ESTA OPERAÇÃO NÃO PODERÁ SER DESFEITA!</strong>
+                            </div>
+                            <form method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-lg mr-2">
+                                    <i class="fas fa-trash mr-1"></i>
+                                    Confirmar Exclusão
+                                </button>
+                                <a href="javascript:window.history.back();" class="btn btn-secondary btn-lg">
+                                    <i class="fas fa-times mr-1"></i>
+                                    Cancelar
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="container text-center">
-            <h2>Confirmação de Exclusão</h2>
-            <p style="padding-bottom: 15px;">Você tem certeza que deseja excluir o Produto?</p>
-            <p><strong>ESTA OPERAÇÃO NÃO PODERÁ SER DESFEITA!</strong></p>
-            <form method="post">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
-                <a href="javascript:window.history.back();" class="btn btn-secondary">Cancelar</a>
-            </form>
-        </div>
+        
         <!-- Importar Bootstrap JavaScript -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

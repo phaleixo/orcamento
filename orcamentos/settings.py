@@ -1,4 +1,3 @@
-
 from pathlib import Path
 import os
 from django.contrib.messages import constants as messages
@@ -20,8 +19,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-# adm = administracao
-# senha = abaco
+# adm = abaco
+# senha = admin
 
 # gestor = gestor1
 # senha = lu117296
@@ -61,7 +60,9 @@ ROOT_URLCONF = 'orcamentos.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'home', 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -3,9 +3,13 @@ from .models import Pedido
 from .models import CadastrarProduto
 from .models import CriarCliente
 from .models import CadastroEmpresa
+from .admin_site import CustomAdminSite
 
+# Create custom admin site
+admin_site = CustomAdminSite(name='admin')
 
-admin.site.register(Pedido)
-admin.site.register(CadastrarProduto)
-admin.site.register(CriarCliente)
-admin.site.register(CadastroEmpresa)
+# Register models with the custom admin site
+admin_site.register(Pedido)
+admin_site.register(CadastrarProduto)
+admin_site.register(CriarCliente)
+admin_site.register(CadastroEmpresa)

@@ -1,0 +1,22 @@
+.bg-image-overlay {
+    background-image: url('../image/login.jpg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.bg-image-overlay::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(30, 59, 138, 0.331);
+    z-index: 1;
+}
+
+.content-over-image {
+    position: relative;
+    z-index: 2;
+} 

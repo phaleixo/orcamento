@@ -4,42 +4,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOVO ORÇAMENTO</title>
-    <!-- Importar Bootstrap CSS -->
+    <title>Criar Orçamento - Orça Facil</title>
+    <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Css -->
     <link rel="stylesheet" href="{% static 'style/style.css' %}">
-    <!-- Fontes Anek -->
+    <link rel="stylesheet" href="{% static 'style/moderna.css' %}">
+    <!-- Fontes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anek+Latin:wdth,wght@87.5,100..800&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="d-flex align-items-center ml-3">
             <div class="logo mr-2">
-                <img class="logo" src="{% static 'image/logo_192_dark.png' %}" alt="Logo"/>
+                <img class="logo" src="{% static 'image/logo_192_dark.png' %}" alt="Logo" style="filter: brightness(0) invert(1);"/>
             </div>
-            <h1>Orça Facil</h1>
+            <a class="navbar-brand" href="{% url 'all' %}">Orça Facil</a>
         </div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>  
+            <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <!-- Botões para ajustar o tamanho da fonte e Dark mode-->
-                    <div class="text-right mr-3 mt-1">
-                        <button class="btn btn-sm btn-outline-secondary rounded-pill" id="decreaseFont">
+                    <div class="d-flex align-items-center mr-3">
+                        <button class="btn btn-sm btn-outline-light rounded-pill mr-1" id="decreaseFont">
                             <i class="fas fa-font"></i> -
                         </button>
-                        <button class="btn btn-sm btn-outline-secondary rounded-pill" id="increaseFont">
+                        <button class="btn btn-sm btn-outline-light rounded-pill mr-1" id="increaseFont">
                             <i class="fas fa-font"></i> +
                         </button>
-                        <button class="btn btn-sm btn-outline-secondary rounded-pill" id="invertColors">
+                        <button class="btn btn-sm btn-outline-light rounded-pill" id="invertColors">
                             <i class="fa-solid fa-circle-half-stroke"></i>
                         </button>
                     </div>
@@ -47,7 +48,7 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="#">
                         <i class="fas fa-user-circle mr-1"></i>
-                        Bem Vindo, {{ user.get_username }}
+                        {{ user.get_username }}
                     </a>
                 </li>
                 
@@ -60,7 +61,7 @@
                 <li class="nav-item">
                     <a href="{% url 'logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link" role="button">
                         <i class="fas fa-sign-out-alt mr-1"></i>
-                        Deslogar
+                        Sair
                     </a>
                     <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
                         {% csrf_token %}
@@ -69,185 +70,150 @@
             </ul>
         </div>
     </nav>
+    
+    <!-- Conteúdo Principal -->
     <div class="container mt-4">
-        <!-- Exibição de mensagens de erro -->
-        <div class="container mt-4">
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        {{ message }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        </div>
+        <!-- Mensagens de Erro/Sucesso -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        
         <div class="card shadow-sm mb-4">
-            <div class="card-header bg-white">
+            <div class="card-header">
                 <h3 class="mb-0">
-                    <i class="fas fa-file-invoice-dollar text-secondary mr-2"></i>
-                    NOVO ORÇAMENTO
+                    <i class="fas fa-file-invoice-dollar mr-2"></i>
+                    Criar Novo Orçamento
                 </h3>
             </div>
             <div class="card-body">
-                <!-- Formulário de Criação de Pedido -->
                 <form id="criarPedidoForm" method="post">
                     {% csrf_token %}
                     
-                    <!-- Informações do Cliente -->
-                    <div class="card mb-4 border">
-                        <div class="card-header bg-white">
-                            <h5 class="mb-0">
-                                <i class="fas fa-user-tag text-secondary mr-2"></i>
-                                Informações do Cliente
-                            </h5>
+                    <!-- Dados do Cliente -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Dados do Cliente</h5>
                         </div>
                         <div class="card-body">
                             <div class="form-row">
-                                <div class="form-group col-md-3">
-                                    <label for="data">
-                                        <i class="far fa-calendar-alt mr-1"></i>
-                                        Data do Pedido:
-                                    </label>
-                                    <input type="date" class="form-control" id="data" name="data" value="{{ date.today|date:'Y-m-d' }}" readonly required>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="id_cpf_cnpj">
-                                        <i class="fas fa-id-card mr-1"></i>
-                                        CPF/CNPJ:
-                                    </label>
-                                    <input type="text" class="form-control" id="id_cpf_cnpj" name="cpf_cnpj" required data-url="{% url 'buscar_cliente' %}" placeholder="Digite o CPF ou CNPJ">
+                                <div class="form-group col-md-6">
+                                    <label for="id_cpf_cnpj">CPF/CNPJ:</label>
+                                    <input type="text" class="form-control" id="id_cpf_cnpj" name="cpf_cnpj" value="{{ form.cpf_cnpj.value|default:'' }}" required data-url="{% url 'buscar_cliente' %}">
                                     <div id="erro_cpf_cnpj" class="invalid-feedback" style="display: none;">
-                                        Corrija o CPF ou CNPJ.
+                                        CPF/CNPJ deve ter entre 11 e 14 caracteres.
                                     </div>
-                                    <ul id="cpf_cnpj_suggestions" class="list-group shadow-sm mt-1" style="display:none; position: absolute; z-index: 100; width: 100%;"></ul>
                                 </div>
-                                <div class="form-group col-md-5">
-                                    <label for="id_contato">
-                                        <i class="fas fa-phone mr-1"></i>
-                                        Contato:
-                                    </label>
-                                    <input type="text" class="form-control" id="id_contato" name="contato" required placeholder="(00) 00000-0000">
+                                <div class="form-group col-md-6">
+                                    <label for="id_data">Data:</label>
+                                    <input type="date" class="form-control" id="id_data" name="data" value="{{ form.data.value|default:'' }}" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="id_nome_cliente">Nome do Cliente:</label>
+                                    <input type="text" class="form-control" id="id_nome_cliente" name="nome_cliente" value="{{ form.nome_cliente.value|default:'' }}" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="id_contato">Contato:</label>
+                                    <input type="text" class="form-control" id="id_contato" name="contato" value="{{ form.contato.value|default:'' }}" required>
                                     <div id="erro_contato" class="invalid-feedback" style="display: none;">
-                                        O número de telefone deve ter 11 dígitos.
+                                        Número de contato deve ter 11 dígitos.
                                     </div>
-                                </div>
-                                <div class="form-group col-12">
-                                    <label for="id_nome_cliente">
-                                        <i class="fas fa-user mr-1"></i>
-                                        Nome do Cliente:
-                                    </label>
-                                    <input type="text" class="form-control" id="id_nome_cliente" name="nome_cliente" required placeholder="Nome completo do cliente">
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Seção de produtos -->
-                    <div class="card mb-4 border">
-                        <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">
-                                <i class="fas fa-shopping-cart text-secondary mr-2"></i>
-                                Produtos
-                            </h5>
-                            <button type="button" id="adicionar-produto" class="btn btn-outline-secondary btn-sm">
-                                <i class="fas fa-plus mr-1"></i> Adicionar Produto
-                            </button>
+                    <!-- Produtos -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Produtos</h5>
                         </div>
                         <div class="card-body">
                             <div id="produtos-container">
-                                <!-- Template para linha de produto -->
-                                <div class="produto-item border rounded p-3 mb-3">
-                                    <div class="form-row align-items-end">
-                                        <div class="col-md-5 mb-3 mb-md-0">
-                                            <label for="id_produto_0">
-                                                <i class="fas fa-tag mr-1"></i>
-                                                Produto:
-                                            </label>
-                                            <select id="id_produto_0" name="produtos[]" class="form-control produto-select custom-select" required>
+                                <div class="produto-item mb-3">
+                                    <div class="form-row">
+                                        <div class="col-md-5">
+                                            <label for="id_produto_0">Produto:</label>
+                                            <select class="form-control produto-select" id="id_produto_0" name="produtos[]" required>
                                                 <option value="">Selecione um produto</option>
                                                 {% for produto in produtos %}
                                                     <option value="{{ produto.id }}" data-valor="{{ produto.valorproduto }}">{{ produto.produto }}</option>
                                                 {% endfor %}
                                             </select>
                                         </div>
-                                        <div class="col-md-2 mb-3 mb-md-0">
-                                            <label for="quantidade_0">
-                                                <i class="fas fa-sort-numeric-up mr-1"></i>
-                                                Quantidade:
-                                            </label>
-                                            <input type="number" id="quantidade_0" class="form-control quantidade-input" name="quantidades[]" min="1" value="1" required>
+                                        <div class="col-md-2">
+                                            <label for="quantidade_0">Quantidade:</label>
+                                            <input type="number" class="form-control quantidade-input" id="quantidade_0" name="quantidades[]" value="1" min="1" required>
                                         </div>
-                                        <div class="col-md-3 mb-3 mb-md-0">
-                                            <label for="valor_unitario_0">
-                                                <i class="fas fa-dollar-sign mr-1"></i>
-                                                Valor Unitário R$:
-                                            </label>
-                                            <input type="number" step="0.01" id="valor_unitario_0" class="form-control valor-unitario-input" name="valores_unitarios[]" min="0.01" required readonly>
+                                        <div class="col-md-3">
+                                            <label for="valor_unitario_0">Valor Unitário:</label>
+                                            <input type="text" class="form-control valor-unitario-input" id="valor_unitario_0" name="valores_unitarios[]" readonly>
                                         </div>
-                                        <div class="col-md-2 text-right">
-                                            <button type="button" class="btn btn-outline-danger btn-remover-produto" style="display: none;">
-                                                <i class="fas fa-trash"></i>
+                                        <div class="col-md-2 d-flex align-items-end">
+                                            <button type="button" class="btn btn-danger btn-sm btn-remover-produto" style="display: none;">
+                                                <i class="fas fa-trash-alt"></i> Remover
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            
+                            <div class="text-right mb-3">
+                                <button type="button" id="adicionar-produto" class="btn btn-success">
+                                    <i class="fas fa-plus-circle"></i> Adicionar Produto
+                                </button>
+                            </div>
+                            
+                            <div class="form-row justify-content-end">
+                                <div class="col-md-3">
+                                    <label for="valor_total"><strong>Valor Total:</strong></label>
+                                    <input type="text" class="form-control form-control-lg bg-light" id="valor_total" name="valor_total" readonly>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
-                    <!-- Descrição do Pedido -->
-                    <div class="card mb-4 border">
-                        <div class="card-header bg-white">
-                            <h5 class="mb-0">
-                                <i class="fas fa-clipboard-list text-secondary mr-2"></i>
-                                Detalhes do Pedido
-                            </h5>
+                    <!-- Descrições -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Descrições</h5>
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="descricao_impresso">
-                                    <i class="fas fa-print mr-1"></i>
-                                    Descrição do Impresso:
-                                </label>
-                                <textarea class="form-control" id="descricao_impresso" name="descricao_impresso" rows="3" required placeholder="Detalhes sobre o material impresso"></textarea>
+                                <label for="descricao_impresso">Descrição do Impresso:</label>
+                                <textarea class="form-control" id="descricao_impresso" name="descricao_impresso" rows="3" required>{{ form.descricao_impresso.value|default:'' }}</textarea>
                             </div>
-                            
                             <div class="form-group">
-                                <label for="descricao_pedido">
-                                    <i class="fas fa-file-alt mr-1"></i>
-                                    Descrição do Pedido:
-                                </label>
-                                <textarea class="form-control" id="descricao_pedido" name="descricao_pedido" rows="3" required placeholder="Informações adicionais sobre o pedido"></textarea>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="valor_total">
-                                    <i class="fas fa-money-check-alt mr-1"></i>
-                                    Valor Total R$:
-                                </label>
-                                <input type="number" step="0.01" class="form-control font-weight-bold" id="valor_total" name="valor_total" readonly required>
+                                <label for="descricao_pedido">Descrição do Pedido:</label>
+                                <textarea class="form-control" id="descricao_pedido" name="descricao_pedido" rows="3" required>{{ form.descricao_pedido.value|default:'' }}</textarea>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Botões Salvar e Voltar -->
-                    <div class="d-flex justify-content-between">
-                        <a href="javascript:window.history.back();" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left mr-1"></i>
-                            Voltar
-                        </a>
-                        <button type="submit" class="btn btn-success">
-                            <i class="fas fa-save mr-1"></i>
-                            Salvar
+                    <!-- Botões de Ação -->
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="fas fa-save mr-1"></i> Salvar Orçamento
                         </button>
+                        <a href="{% url 'all' %}" class="btn btn-secondary btn-lg ml-2">
+                            <i class="fas fa-arrow-left mr-1"></i> Voltar
+                        </a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <footer class="footer shadow-sm mt-4">
+    
+    <!-- Footer -->
+    <footer class="footer shadow-sm">
         <div class="text-center p-3">
             <a target="_blank" href="https://github.com/phaleixo/orcamento">
                 <i class="fab fa-github mr-2"></i>
@@ -255,11 +221,30 @@
             </a>
         </div>
     </footer>
-    <!-- Importar Bootstrap JavaScript -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="{% static 'scripts/criar_pedido.js' %}"></script>
     <script src="{% static 'scripts/acessibilidade.js' %}"></script>
+    
+    <script>
+        // Exibir data atual se o campo estiver vazio
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!document.getElementById('id_data').value) {
+                const today = new Date();
+                const yyyy = today.getFullYear();
+                let mm = today.getMonth() + 1;
+                let dd = today.getDate();
+
+                if (dd < 10) dd = '0' + dd;
+                if (mm < 10) mm = '0' + mm;
+
+                const formattedToday = yyyy + '-' + mm + '-' + dd;
+                document.getElementById('id_data').value = formattedToday;
+            }
+        });
+    </script>
 </body>
 </html>
