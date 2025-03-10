@@ -1,7 +1,16 @@
 // Função para formatar o valor com duas casas decimais
 function formatarValorDecimal(valor) {
-    var valorFormatado = parseFloat(valor).toFixed(2);
-    return valorFormatado.replace('.', '.');
+    if (isNaN(parseFloat(valor))) {
+        return "0.00";
+    }
+    return parseFloat(valor).toFixed(2);
+}
+
+// Função para converter valor de formato brasileiro (vírgula) para formato decimal (ponto)
+function converterParaDecimal(valor) {
+    if (!valor) return 0;
+    // Converter de formato com vírgula para formato com ponto
+    return String(valor).replace(',', '.');
 }
 
 // Variável para controlar o contador de produtos
@@ -14,7 +23,10 @@ function atualizarValorTotal() {
 
     produtosItems.forEach(item => {
         const quantidade = parseInt(item.querySelector('.quantidade-input').value) || 0;
-        const valorUnitario = parseFloat(item.querySelector('.valor-unitario-input').value) || 0;
+        // Converter para o formato decimal antes de usar parseFloat
+        const valorUnitarioString = item.querySelector('.valor-unitario-input').value;
+        const valorUnitario = parseFloat(converterParaDecimal(valorUnitarioString)) || 0;
+        
         const subtotal = quantidade * valorUnitario;
         valorTotal += subtotal;
     });
@@ -31,12 +43,22 @@ function setupProdutoEventListeners(produtoItem) {
     
     selectProduto.addEventListener('change', function() {
         const selectedOption = this.options[this.selectedIndex];
-        const valor = selectedOption.getAttribute('data-valor');
-        inputValorUnitario.value = valor || '';
+        let valor = selectedOption.getAttribute('data-valor');
+        
+        // Garantir que o valor está no formato correto (com ponto decimal)
+        valor = converterParaDecimal(valor);
+        
+        // Garantir que o valor não é vazio ou inválido
+        if (!valor || isNaN(parseFloat(valor))) {
+            valor = '0.00';
+        }
+        
+        inputValorUnitario.value = valor;
         atualizarValorTotal();
     });
     
     inputQuantidade.addEventListener('input', atualizarValorTotal);
+    inputValorUnitario.addEventListener('input', atualizarValorTotal);
 }
 
 // Função para adicionar um novo produto
@@ -60,7 +82,7 @@ function adicionarProduto() {
     inputQuantidade.value = '1';
     
     inputValorUnitario.id = `valor_unitario_${produtoCounter}`;
-    inputValorUnitario.value = '';
+    inputValorUnitario.value = '0.00';  // Valor padrão com formato correto
     
     // Mostrar o botão de remover
     btnRemover.style.display = 'block';
@@ -259,4 +281,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Exibir data atual
     exibirDataAtual();
+
+    // Para cada produto na página, verificar e corrigir o formato do valor unitário
+    document.querySelectorAll('.produto-item').forEach(item => {
+        const valorInput = item.querySelector('.valor-unitario-input');
+        if (valorInput && valorInput.value) {
+            valorInput.value = converterParaDecimal(valorInput.value);
+        }
+    });
 });
